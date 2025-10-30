@@ -1,0 +1,28 @@
+# robots.txt for Odit International Travels
+
+User-agent: *
+Allow: /
+Allow: /images/
+Allow: /*.js
+Allow: /*.css
+
+Disallow: /admin/
+Disallow: /private/
+Disallow: /*.pdf$
+
+# Sitemap location
+Sitemap: https://www.odittravels.com/sitemap.xml
+
+# Crawl-delay for specific bots
+User-agent: Googlebot
+Crawl-delay: 0
+
+User-agent: Bingbot
+Crawl-delay: 0
+
+# Block bad bots
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: SemrushBot
+Crawl-delay: 10
