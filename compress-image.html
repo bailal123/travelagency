@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Image Compressor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .container {
+            border: 2px dashed #ccc;
+            padding: 30px;
+            text-align: center;
+        }
+        input[type="file"] {
+            margin: 20px 0;
+        }
+        canvas {
+            max-width: 100%;
+            border: 1px solid #ddd;
+            margin: 20px 0;
+        }
+        .download-btn {
+            background: #4CAF50;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            display: none;
+        }
+        .download-btn:hover {
+            background: #45a049;
+        }
+        .info {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f0f0f0;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🖼️ Image Compressor (WebP)</h1>
+        <p>Compress images to WebP format with 80% quality</p>
+        
+        <input type="file" id="imageInput" accept="image/*">
+        
+        <div class="info" id="info" style="display:none;">
+            <p><strong>Original Size:</strong> <span id="originalSize"></span> KB</p>
+            <p><strong>Compressed Size:</strong> <span id="compressedSize"></span> KB</p>
+            <p><strong>Savings:</strong> <span id="savings"></span> KB (<span id="savingsPercent"></span>%)</p>
+        </div>
+        
+        <canvas id="canvas"></canvas>
+        
+        <button class="download-btn" id="downloadBtn">⬇️ Download Compressed Image</button>
+    </div>
+
+    <script>
+        const imageInput = document.getElementById('imageInput');
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const info = document.getElementById('info');
+        let compressedBlob = null;
+        let originalFileName = '';
+
+        imageInput.addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            originalFileName = file.name.replace(/\.[^/.]+$/, "");
+            const originalSize = (file.size / 1024).toFixed(2);
+            document.getElementById('originalSize').textContent = originalSize;
+
+            const img = new Image();
+            const reader = new FileReader();
+
+            reader.onload = (event) => {
+                img.src = event.target.result;
+            };
+
+            img.onload = () => {
+                // Set canvas size to image size (max 1920x1080 for hero images)
+                let width = img.width;
+                let height = img.height;
+                
+                // Scale down if too large
+                const maxWidth = 1920;
+                const maxHeight = 1080;
+                
+                if (width > maxWidth || height > maxHeight) {
+                    const ratio = Math.min(maxWidth / width, maxHeight / height);
+                    width = Math.floor(width * ratio);
+                    height = Math.floor(height * ratio);
+                }
+
+                canvas.width = width;
+                canvas.height = height;
+                
+                // Draw image
+                ctx.drawImage(img, 0, 0, width, height);
+                
+                // Convert to WebP with 80% quality
+                canvas.toBlob((blob) => {
+                    compressedBlob = blob;
+                    const compressedSize = (blob.size / 1024).toFixed(2);
+                    const savings = (originalSize - compressedSize).toFixed(2);
+                    const savingsPercent = ((savings / originalSize) * 100).toFixed(1);
+                    
+                    document.getElementById('compressedSize').textContent = compressedSize;
+                    document.getElementById('savings').textContent = savings;
+                    document.getElementById('savingsPercent').textContent = savingsPercent;
+                    
+                    info.style.display = 'block';
+                    downloadBtn.style.display = 'inline-block';
+                }, 'image/webp', 0.80);
+            };
+
+            reader.readAsDataURL(file);
+        });
+
+        downloadBtn.addEventListener('click', () => {
+            if (!compressedBlob) return;
+            
+            const url = URL.createObjectURL(compressedBlob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = originalFileName + '.webp';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        });
+    </script>
+</body>
+</html>

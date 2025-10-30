@@ -39,7 +39,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="dns-prefetch" href="//cdn.tailwindcss.com">
     <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
-    <link rel="preload" href="images/visa-hero.jpg" as="image" fetchpriority="high">
+    <link rel="preload" href="images/visa-hero.webp" as="image" type="image/webp" fetchpriority="high">
     <link rel="preload" href="https://cdn.tailwindcss.com" as="script">
     
     <!-- Tailwind CSS - Load synchronously to prevent CLS -->
@@ -67,8 +67,24 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
     <noscript><link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;700;800;900&display=swap" rel="stylesheet"></noscript>
     
-    <!-- Font Awesome - Latest version with defer -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print" onload="this.media='all'">
+    <!-- Font Awesome - Latest version with font-display optimization -->
+    <style>
+    @font-face {
+        font-family: 'Font Awesome 6 Free';
+        font-style: normal;
+        font-weight: 900;
+        font-display: swap;
+        src: url(https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/webfonts/fa-solid-900.woff2) format('woff2');
+    }
+    @font-face {
+        font-family: 'Font Awesome 6 Brands';
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: url(https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/webfonts/fa-brands-400.woff2) format('woff2');
+    }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print" onload="this.media='all'; this.onload=null;">
     <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
     
     <!-- Structured Data / Schema.org for SEO -->
@@ -370,7 +386,10 @@
     <section class="relative min-h-screen flex items-center justify-center overflow-hidden">
         <!-- Background Image with Overlay -->
         <div class="absolute inset-0">
-            <img src="images/visa-hero.jpg" alt="Visa Services" width="1920" height="1080" fetchpriority="high" class="w-full h-full object-cover" style="content-visibility:auto">
+            <picture>
+                <source srcset="images/visa-hero.webp" type="image/webp">
+                <img src="images/visa-hero.jpg" alt="Visa Services" width="1920" height="1080" fetchpriority="high" class="w-full h-full object-cover" style="content-visibility:auto">
+            </picture>
             <div class="absolute inset-0 bg-gradient-to-br from-blue-900/95 via-blue-800/90 to-blue-900/95"></div>
         </div>
         <!-- Background Pattern -->
