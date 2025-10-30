@@ -42,18 +42,8 @@
     <link rel="preload" href="images/visa-hero.jpg" as="image" fetchpriority="high">
     <link rel="preload" href="https://cdn.tailwindcss.com" as="script">
     
-    <!-- Inline Critical CSS for Mobile Performance -->
-    <style>
-        /* Critical CSS for above-the-fold mobile content */
-        body{font-family:Cairo,sans-serif;margin:0;padding:0}
-        .hero-section{min-height:100vh;background:linear-gradient(135deg,#1e3a8a,#1e40af)}
-        h1{font-size:2rem;font-weight:800;line-height:1.2}
-        .btn-primary{background:#fbbf24;color:#1f2937;padding:1rem 2rem;border-radius:0.5rem;font-weight:700;text-decoration:none;display:inline-block}
-        @media(min-width:768px){h1{font-size:3rem}}
-    </style>
-    
-    <!-- Tailwind CSS - Async Load -->
-    <script src="https://cdn.tailwindcss.com" defer></script>
+    <!-- Tailwind CSS - Load synchronously to prevent CLS -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -235,6 +225,8 @@
             }
         }
         
+        
+        /* Essential Animations Only - Optimized for Performance */
         @keyframes fadeInUp {
             from {
                 transform: translateY(30px);
@@ -244,30 +236,6 @@
                 transform: translateY(0);
                 opacity: 1;
             }
-        }
-        
-        .animate-float {
-            animation: float 3s ease-in-out infinite;
-        }
-        
-        .animate-pulse-glow {
-            animation: pulse-glow 2s ease-in-out infinite;
-        }
-        
-        .animate-slide-in-right {
-            animation: slideInFromRight 0.8s ease-out;
-        }
-        
-        .animate-slide-in-left {
-            animation: slideInFromLeft 0.8s ease-out;
-        }
-        
-        .animate-zoom-in {
-            animation: zoomIn 0.6s ease-out;
-        }
-        
-        .animate-fade-in-up {
-            animation: fadeInUp 0.8s ease-out;
         }
         
         @keyframes slideDown {
@@ -285,42 +253,16 @@
             animation: slideDown 0.5s ease-out;
         }
         
-        @keyframes shimmer {
-            0% { background-position: -1000px 0; }
-            100% { background-position: 1000px 0; }
-        }
-        
-        .shimmer {
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            background-size: 1000px 100%;
-            animation: shimmer 3s infinite;
-        }
-        
-        @keyframes countUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .count-up {
-            animation: countUp 0.6s ease-out;
-        }
-        
-        /* Parallax Effect */
-        .parallax {
-            transform: translateZ(0);
-            will-change: transform;
-        }
-        
         /* Smooth Scroll */
         html {
             scroll-behavior: smooth;
         }
         
-        /* Intersection Observer Animations */
+        /* Intersection Observer Animations - Lightweight */
         .reveal {
             opacity: 0;
-            transform: translateY(50px);
-            transition: all 0.8s ease-out;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
         }
         
         .reveal.active {
@@ -328,29 +270,14 @@
             transform: translateY(0);
         }
         
-        /* Gradient Text */
-        .gradient-text {
-            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #fbbf24 100%);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: gradient-shift 3s ease infinite;
-        }
-        
-        @keyframes gradient-shift {
-            0%, 100% { background-position: 0% center; }
-            50% { background-position: 100% center; }
-        }
-        
-        /* Card Hover Effects */
+        /* Card Hover Effects - Simplified */
         .card-3d {
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         
         .card-3d:hover {
-            transform: translateY(-10px) scale(1.03);
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.2);
         }
         
         /* Loading Optimization */
@@ -378,7 +305,7 @@
                     </div>
                     
                     <!-- Irresistible Offer -->
-                    <div class="flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-full font-bold text-sm animate-pulse-glow">
+                    <div class="flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-full font-bold text-sm">
                         <i class="fas fa-fire-flame-curved"></i>
                         <span class="hidden sm:inline">عرض حصري!</span>
                         <span class="font-black">خصم 30%</span>
@@ -391,7 +318,7 @@
                             <i class="fab fa-whatsapp text-lg" aria-hidden="true"></i>
                             <span class="hidden sm:inline">واتساب</span>
                         </a>
-                        <a href="#booking" aria-label="احجز موعدك الآن" class="bg-yellow-400 hover:bg-yellow-500 text-blue-900 px-6 py-2 rounded-full font-black text-sm transition-all flex items-center gap-2 shadow-lg hover:scale-105 shimmer">
+                        <a href="#booking" aria-label="احجز موعدك الآن" class="bg-yellow-400 hover:bg-yellow-500 text-blue-900 px-6 py-2 rounded-full font-black text-sm transition-all flex items-center gap-2 shadow-lg hover:scale-105">
                             <i class="fas fa-rocket" aria-hidden="true"></i>
                             <span>احجز الآن</span>
                         </a>
@@ -455,7 +382,7 @@
         <div class="relative z-10 container mx-auto px-4 py-20">
             <div class="max-w-4xl mx-auto text-center">
                 <!-- Badge -->
-                <div class="inline-flex items-center gap-2 bg-yellow-400 text-blue-900 px-6 py-3 rounded-full font-bold text-sm mb-8 animate-pulse-glow">
+                <div class="inline-flex items-center gap-2 bg-yellow-400 text-blue-900 px-6 py-3 rounded-full font-bold text-sm mb-8">
                     <i class="fas fa-crown"></i>
                     <span>أسرع خدمة تأشيرات في الخليج</span>
                 </div>
@@ -523,7 +450,7 @@
         </div>
         
         <!-- Scroll Indicator -->
-        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2">
             <i class="fas fa-chevron-down text-white text-2xl opacity-75"></i>
         </div>
     </section>
@@ -667,7 +594,7 @@
                     🎯 خدماتنا المتكاملة
                 </div>
                 <h2 class="text-4xl md:text-6xl font-black text-gray-900 mb-6">
-                    باقات تأشيرة <span class="gradient-text">شنغن الأوروبية</span>
+                    باقات تأشيرة <span class="text-blue-600">شنغن الأوروبية</span>
                 </h2>
                 <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
                     نقدم 3 باقات مميزة تناسب جميع احتياجاتك للحصول على تأشيرة شنغن بسرعة وسهولة
@@ -717,8 +644,8 @@
                 </div>
 
                 <!-- Premium Package - Most Popular -->
-                <div class="bg-gradient-to-br from-blue-900 to-blue-800 rounded-3xl p-8 shadow-2xl border-4 border-yellow-400 card-3d reveal relative transform scale-105">
-                    <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-yellow-400 text-blue-900 px-6 py-2 rounded-full font-black text-sm animate-pulse-glow">
+                <div class="bg-gradient-to-br from-blue-900 to-blue-800 rounded-3xl p-8 shadow-2xl border-4 border-yellow-400 card-3d reveal relative">
+                    <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-yellow-400 text-blue-900 px-6 py-2 rounded-full font-black text-sm">
                         🔥 الأكثر طلباً
                     </div>
                     <div class="text-center mb-6 mt-4">
@@ -765,7 +692,7 @@
                             <span class="text-white">ضمان استرجاع المال</span>
                         </li>
                     </ul>
-                    <a href="#booking" class="block bg-yellow-400 hover:bg-yellow-500 text-blue-900 text-center py-4 rounded-xl font-black transition-all hover:scale-105 shimmer">
+                    <a href="#booking" class="block bg-yellow-400 hover:bg-yellow-500 text-blue-900 text-center py-4 rounded-xl font-black transition-all hover:scale-105">
                         <i class="fas fa-rocket ml-2"></i>
                         احجز الباقة المميزة
                     </a>
