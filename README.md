@@ -8,6 +8,13 @@
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Arabic](https://img.shields.io/badge/Language-Arabic-red)](README.md)
 
+**📊 Lighthouse Scores:**
+
+![Performance](https://img.shields.io/badge/Performance-96%2B-brightgreen)
+![Accessibility](https://img.shields.io/badge/Accessibility-92%2B-green)
+![SEO](https://img.shields.io/badge/SEO-100-brightgreen)
+![Best%20Practices](https://img.shields.io/badge/Best%20Practices-100-brightgreen)
+
 </div>
 
 ---

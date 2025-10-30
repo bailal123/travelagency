@@ -62,11 +62,13 @@
         }
     </script>
     
-    <!-- Google Fonts - Optimized -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <!-- Google Fonts - Optimized with font-display swap -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;700;800;900&display=swap" rel="stylesheet"></noscript>
     
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Font Awesome - Latest version with defer -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
     
     <!-- Structured Data / Schema.org for SEO -->
     <script type="application/ld+json">
@@ -430,7 +432,7 @@
     <section class="relative min-h-screen flex items-center justify-center overflow-hidden">
         <!-- Background Image with Overlay -->
         <div class="absolute inset-0">
-            <img src="images/visa-hero.jpg" alt="Visa Services" class="w-full h-full object-cover">
+            <img src="images/visa-hero.jpg" alt="Visa Services" width="1920" height="1080" fetchpriority="high" class="w-full h-full object-cover">
             <div class="absolute inset-0 bg-gradient-to-br from-blue-900/95 via-blue-800/90 to-blue-900/95"></div>
         </div>
         <!-- Background Pattern -->
@@ -557,7 +559,7 @@
             <!-- Services Image Showcase -->
             <div class="mb-16 rounded-3xl overflow-hidden shadow-2xl max-w-5xl mx-auto">
                 <div class="relative">
-                    <img src="images/visa-services.jpg" alt="خدمات التأشيرات" class="w-full h-auto">
+                    <img src="images/visa-services.jpg" alt="خدمات التأشيرات" width="1200" height="800" loading="lazy" class="w-full h-auto">
                     <div class="absolute inset-0 bg-gradient-to-t from-blue-900/80 via-transparent to-transparent flex items-end">
                         <div class="p-8 text-white">
                             <h3 class="text-3xl font-black mb-2">خدمات تأشيرات احترافية</h3>
@@ -1168,8 +1170,8 @@
                                 </div>
 
                                 <div>
-                                    <label class="block text-gray-700 font-bold mb-2">الجنسية *</label>
-                                    <select name="nationality" required class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-600 focus:outline-none transition-all">
+                                    <label for="nationality" class="block text-gray-700 font-bold mb-2">الجنسية *</label>
+                                    <select id="nationality" name="nationality" required class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-600 focus:outline-none transition-all">
                                         <option value="">اختر الجنسية</option>
                                         <option value="saudi">السعودية</option>
                                         <option value="uae">الإمارات</option>
@@ -1189,8 +1191,8 @@
                             
                             <div class="space-y-4">
                                 <div>
-                                    <label class="block text-gray-700 font-bold mb-2">نوع التأشيرة *</label>
-                                    <select name="visaType" required class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-600 focus:outline-none transition-all">
+                                    <label for="visaType" class="block text-gray-700 font-bold mb-2">نوع التأشيرة *</label>
+                                    <select id="visaType" name="visaType" required class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-600 focus:outline-none transition-all">
                                         <option value="">اختر نوع التأشيرة</option>
                                         <option value="schengen">شنغن (أوروبا)</option>
                                         <option value="uk">المملكة المتحدة</option>
@@ -1212,8 +1214,8 @@
                                 </div>
 
                                 <div>
-                                    <label class="block text-gray-700 font-bold mb-2">مدة الإقامة *</label>
-                                    <select name="duration" required class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-600 focus:outline-none transition-all">
+                                    <label for="duration" class="block text-gray-700 font-bold mb-2">مدة الإقامة *</label>
+                                    <select id="duration" name="duration" required class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-600 focus:outline-none transition-all">
                                         <option value="">اختر المدة</option>
                                         <option value="1-7">1-7 أيام</option>
                                         <option value="8-15">8-15 يوم</option>
@@ -1419,17 +1421,17 @@
         </div>
     </footer>
 
-    <!-- Floating Buttons -->
-    <a href="https://wa.me/971544785539" class="fixed bottom-6 left-6 bg-green-500 hover:bg-green-600 text-white w-16 h-16 rounded-full flex items-center justify-center shadow-2xl z-50 transition-all hover:scale-110 animate-pulse">
-        <i class="fab fa-whatsapp text-3xl"></i>
+    <!-- Floating Buttons with Accessibility -->
+    <a href="https://wa.me/971544785539" aria-label="تواصل معنا عبر واتساب" class="fixed bottom-6 left-6 bg-green-500 hover:bg-green-600 text-white w-16 h-16 rounded-full flex items-center justify-center shadow-2xl z-50 transition-all hover:scale-110 animate-pulse">
+        <i class="fab fa-whatsapp text-3xl" aria-hidden="true"></i>
     </a>
 
-    <a href="tel:+971544785539" class="fixed bottom-24 left-6 bg-blue-600 hover:bg-blue-700 text-white w-16 h-16 rounded-full flex items-center justify-center shadow-2xl z-50 transition-all hover:scale-110">
-        <i class="fas fa-phone text-2xl"></i>
+    <a href="tel:+971544785539" aria-label="اتصل بنا مباشرة" class="fixed bottom-24 left-6 bg-blue-600 hover:bg-blue-700 text-white w-16 h-16 rounded-full flex items-center justify-center shadow-2xl z-50 transition-all hover:scale-110">
+        <i class="fas fa-phone text-2xl" aria-hidden="true"></i>
     </a>
 
-    <button id="backToTop" class="fixed bottom-6 right-6 bg-gray-800 hover:bg-gray-900 text-white w-14 h-14 rounded-full items-center justify-center shadow-2xl z-50 transition-all hover:scale-110 hidden">
-        <i class="fas fa-arrow-up"></i>
+    <button id="backToTop" aria-label="العودة إلى الأعلى" class="fixed bottom-6 right-6 bg-gray-800 hover:bg-gray-900 text-white w-14 h-14 rounded-full items-center justify-center shadow-2xl z-50 transition-all hover:scale-110 hidden">
+        <i class="fas fa-arrow-up" aria-hidden="true"></i>
     </button>
 
     <!-- Success Modal -->
@@ -1448,8 +1450,8 @@
         </div>
     </div>
 
-    <!-- JavaScript -->
-    <script src="script-enhanced.js"></script>
+    <!-- JavaScript - Deferred for better performance -->
+    <script defer src="script-enhanced.js"></script>
     
     <script>
         // Sticky Header on Scroll
