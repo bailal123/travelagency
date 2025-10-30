@@ -42,31 +42,31 @@
     
     <!-- Critical CSS Inline for Mobile First Paint -->
     <style>
-        /* Critical Above-the-Fold CSS */
+        /* Critical Above-the-Fold CSS - Optimized for Mobile */
         *{box-sizing:border-box;margin:0;padding:0}
-        body{font-family:Cairo,sans-serif;background:#f9fafb;color:#1f2937;-webkit-font-smoothing:antialiased}
-        .hero{min-height:100vh;background:linear-gradient(135deg,#1e3a8a 0%,#1e40af 100%);display:flex;align-items:center;justify-center;position:relative;overflow:hidden}
-        h1{font-size:2.5rem;font-weight:900;line-height:1.1;color:#fff;margin-bottom:1.5rem}
-        .btn{padding:1.25rem 2.5rem;border-radius:9999px;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:0.75rem;transition:all 0.3s}
-        .btn-primary{background:#fbbf24;color:#1f2937}
+        body{font-family:system-ui,-apple-system,sans-serif;background:#f9fafb;color:#1f2937;-webkit-font-smoothing:antialiased}
+        .hero{min-height:100vh;background:linear-gradient(135deg,#1e3a8a,#1e40af);display:flex;align-items:center;justify-center;position:relative;overflow:hidden}
+        h1{font-size:2rem;font-weight:900;line-height:1.1;color:#fff;margin-bottom:1.5rem}
+        .btn{padding:1rem 2rem;border-radius:9999px;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:0.75rem;transition:transform 0.2s;background:#fbbf24;color:#1f2937}
         .btn-success{background:#10b981;color:#fff}
         .container{max-width:1280px;margin:0 auto;padding:0 1rem}
-        @media(min-width:768px){h1{font-size:4rem}}
+        .section{padding:2rem 1rem;background:#fff}
+        .card{background:#fff;border-radius:1rem;padding:1.5rem;box-shadow:0 2px 8px rgba(0,0,0,0.1);margin-bottom:1rem}
+        .price{font-size:2.5rem;font-weight:900;color:#1f2937}
+        @media(min-width:768px){h1{font-size:3rem}}
     </style>
     
-    <!-- Tailwind CSS - Deferred -->
-    <script src="https://cdn.tailwindcss.com" defer></script>
-    <script>
-        tailwind={config:{theme:{extend:{colors:{primary:'#1e3a8a','primary-dark':'#1e40af',secondary:'#fbbf24',accent:'#10b981',dark:'#1f2937'},fontFamily:{cairo:['Cairo','sans-serif']}}}}}
-    </script>
+    <!-- NO Tailwind on Mobile - Using inline styles for speed -->
     
-    <!-- Google Fonts - Optimized with font-display swap -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-    <noscript><link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet"></noscript>
+    <!-- Minimal Font - System fonts first -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;900&display=swap" rel="stylesheet" media="print" onload="this.media='all';this.onload=null">
     
-    <!-- Font Awesome - Deferred -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print" onload="this.media='all'">
-    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
+    <!-- Font Awesome - Only essential icons inline -->
+    <style>
+        .fa-rocket::before{content:"🚀"}
+        .fa-whatsapp::before{content:"📱"}
+        .fa-crown::before{content:"👑"}
+    </style>
     
     <!-- Structured Data / Schema.org for SEO -->
     <script type="application/ld+json">
@@ -76,16 +76,13 @@
 <body>
     <!-- Hero Section - Mobile Optimized -->
     <section class="hero">
-        <picture>
-            <source media="(max-width: 767px)" srcset="images/visa-hero-mobile.jpg" type="image/jpeg">
-            <source media="(min-width: 768px)" srcset="images/visa-hero.jpg" type="image/jpeg">
-            <img src="images/visa-hero.jpg" alt="خدمات تأشيرة شنغن" width="1920" height="1080" fetchpriority="high" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:0">
-        </picture>
-        <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,rgba(30,58,138,0.95),rgba(30,64,175,0.9));z-index:1"></div>
+        <!-- Use gradient instead of heavy image on mobile -->
+        <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,#1e3a8a,#1e40af);z-index:0"></div>
+        <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle at 30% 50%,rgba(59,130,246,0.5),transparent);z-index:1"></div>
         
         <div class="container" style="position:relative;z-index:10;text-align:center;padding:2rem 1rem">
-            <div style="display:inline-flex;align-items:center;gap:0.5rem;background:#fbbf24;color:#1e3a8a;padding:0.75rem 1.5rem;border-radius:9999px;font-weight:700;font-size:0.875rem;margin-bottom:2rem">
-                <i class="fas fa-crown"></i>
+            <div style="display:inline-flex;align-items:center;gap:0.5rem;background:#fbbf24;color:#1f2937;padding:0.75rem 1.5rem;border-radius:9999px;font-weight:700;font-size:0.875rem;margin-bottom:2rem">
+                <span class="fa-crown"></span>
                 <span>أسرع خدمة تأشيرات</span>
             </div>
             
@@ -96,12 +93,12 @@
             </p>
             
             <div style="display:flex;flex-direction:column;gap:1rem;margin-bottom:2rem;align-items:center">
-                <a href="#booking" class="btn btn-primary" aria-label="احجز موعدك الآن">
-                    <i class="fas fa-rocket"></i>
+                <a href="#booking" class="btn" aria-label="احجز موعدك الآن">
+                    <span class="fa-rocket"></span>
                     احجز موعدك الآن
                 </a>
                 <a href="https://wa.me/971544785539" class="btn btn-success" aria-label="تواصل معنا على واتساب">
-                    <i class="fab fa-whatsapp"></i>
+                    <span class="fa-whatsapp"></span>
                     تواصل واتساب
                 </a>
             </div>
@@ -131,28 +128,22 @@
             </h2>
             
             <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem">
-                <div style="background:#fff;border-radius:1.5rem;padding:2rem;box-shadow:0 4px 6px rgba(0,0,0,0.1);border-top:4px solid #1e3a8a">
-                    <div style="width:4rem;height:4rem;background:#dbeafe;border-radius:1rem;display:flex;align-items:center;justify-center;margin-bottom:1rem">
-                        <i class="fas fa-rocket" style="font-size:2rem;color:#1e3a8a"></i>
-                    </div>
+                <div class="card">
+                    <div style="font-size:3rem;margin-bottom:1rem">🚀</div>
                     <h3 style="font-size:1.5rem;font-weight:700;color:#1f2937;margin-bottom:0.75rem">سرعة خيالية</h3>
-                    <p style="color:#4b5563;line-height:1.6;font-weight:500">موعد مضمون خلال 12 ساعة فقط - الأسرع في المنطقة بالكامل</p>
+                    <p style="color:#4b5563;line-height:1.6">موعد مضمون خلال 12 ساعة فقط</p>
                 </div>
                 
-                <div style="background:#fff;border-radius:1.5rem;padding:2rem;box-shadow:0 4px 6px rgba(0,0,0,0.1);border-top:4px solid #10b981">
-                    <div style="width:4rem;height:4rem;background:#d1fae5;border-radius:1rem;display:flex;align-items:center;justify-center;margin-bottom:1rem">
-                        <i class="fas fa-check-double" style="font-size:2rem;color:#10b981"></i>
-                    </div>
+                <div class="card">
+                    <div style="font-size:3rem;margin-bottom:1rem">✅</div>
                     <h3 style="font-size:1.5rem;font-weight:700;color:#1f2937;margin-bottom:0.75rem">نسبة نجاح 99.8%</h3>
-                    <p style="color:#4b5563;line-height:1.6;font-weight:500">أعلى معدل نجاح في الصناعة مع ضمان استرجاع المال</p>
+                    <p style="color:#4b5563;line-height:1.6">أعلى معدل نجاح في الصناعة</p>
                 </div>
                 
-                <div style="background:#fff;border-radius:1.5rem;padding:2rem;box-shadow:0 4px 6px rgba(0,0,0,0.1);border-top:4px solid #fbbf24">
-                    <div style="width:4rem;height:4rem;background:#fef3c7;border-radius:1rem;display:flex;align-items:center;justify-center;margin-bottom:1rem">
-                        <i class="fas fa-headset" style="font-size:2rem;color:#fbbf24"></i>
-                    </div>
+                <div class="card">
+                    <div style="font-size:3rem;margin-bottom:1rem">🎧</div>
                     <h3 style="font-size:1.5rem;font-weight:700;color:#1f2937;margin-bottom:0.75rem">دعم 24/7</h3>
-                    <p style="color:#4b5563;line-height:1.6;font-weight:500">فريق دعم متاح على مدار الساعة لمساعدتك</p>
+                    <p style="color:#4b5563;line-height:1.6">فريق دعم على مدار الساعة</p>
                 </div>
             </div>
         </div>
@@ -198,16 +189,15 @@
         </div>
     </section>
 
-    <!-- Floating Buttons -->
-    <a href="https://wa.me/971544785539" aria-label="تواصل معنا على واتساب" style="position:fixed;bottom:20px;right:20px;width:60px;height:60px;background:#25d366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(37,211,102,0.4);z-index:1000;text-decoration:none">
-        <i class="fab fa-whatsapp" style="font-size:2rem;color:#fff"></i>
+    <!-- Floating Buttons - Simplified -->
+    <a href="https://wa.me/971544785539" aria-label="تواصل معنا على واتساب" style="position:fixed;bottom:20px;right:20px;width:60px;height:60px;background:#25d366;border-radius:50%;display:flex;align-items:center;justify-center;box-shadow:0 4px 12px rgba(37,211,102,0.4);z-index:1000;text-decoration:none;font-size:2rem">
+        📱
     </a>
     
-    <a href="tel:+971544785539" aria-label="اتصل بنا على الهاتف" style="position:fixed;bottom:90px;right:20px;width:60px;height:60px;background:#1e3a8a;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(30,58,138,0.4);z-index:1000;text-decoration:none">
-        <i class="fas fa-phone" style="font-size:1.5rem;color:#fff"></i>
+    <a href="tel:+971544785539" aria-label="اتصل بنا" style="position:fixed;bottom:90px;right:20px;width:60px;height:60px;background:#1e3a8a;border-radius:50%;display:flex;align-items:center;justify-center;box-shadow:0 4px 12px rgba(30,58,138,0.4);z-index:1000;text-decoration:none;font-size:2rem">
+        📞
     </a>
 
-    <!-- Minimal JavaScript -->
-    <script defer src="script-enhanced.js"></script>
+    <!-- NO JavaScript on mobile-optimized for max speed -->
 </body>
 </html>
