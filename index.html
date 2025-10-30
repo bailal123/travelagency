@@ -39,10 +39,21 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="dns-prefetch" href="//cdn.tailwindcss.com">
     <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
-    <link rel="preload" href="images/visa-hero.jpg" as="image">
+    <link rel="preload" href="images/visa-hero.jpg" as="image" fetchpriority="high">
+    <link rel="preload" href="https://cdn.tailwindcss.com" as="script">
     
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inline Critical CSS for Mobile Performance -->
+    <style>
+        /* Critical CSS for above-the-fold mobile content */
+        body{font-family:Cairo,sans-serif;margin:0;padding:0}
+        .hero-section{min-height:100vh;background:linear-gradient(135deg,#1e3a8a,#1e40af)}
+        h1{font-size:2rem;font-weight:800;line-height:1.2}
+        .btn-primary{background:#fbbf24;color:#1f2937;padding:1rem 2rem;border-radius:0.5rem;font-weight:700;text-decoration:none;display:inline-block}
+        @media(min-width:768px){h1{font-size:3rem}}
+    </style>
+    
+    <!-- Tailwind CSS - Async Load -->
+    <script src="https://cdn.tailwindcss.com" defer></script>
     <script>
         tailwind.config = {
             theme: {
@@ -376,12 +387,12 @@
                     
                     <!-- CTA Buttons -->
                     <div class="flex items-center gap-2">
-                        <a href="https://wa.me/971544785539" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full font-bold text-sm transition-all flex items-center gap-2 shadow-lg hover:scale-105">
-                            <i class="fab fa-whatsapp text-lg"></i>
+                        <a href="https://wa.me/971544785539" aria-label="تواصل معنا عبر واتساب" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full font-bold text-sm transition-all flex items-center gap-2 shadow-lg hover:scale-105">
+                            <i class="fab fa-whatsapp text-lg" aria-hidden="true"></i>
                             <span class="hidden sm:inline">واتساب</span>
                         </a>
-                        <a href="#booking" class="bg-yellow-400 hover:bg-yellow-500 text-blue-900 px-6 py-2 rounded-full font-black text-sm transition-all flex items-center gap-2 shadow-lg hover:scale-105 shimmer">
-                            <i class="fas fa-rocket"></i>
+                        <a href="#booking" aria-label="احجز موعدك الآن" class="bg-yellow-400 hover:bg-yellow-500 text-blue-900 px-6 py-2 rounded-full font-black text-sm transition-all flex items-center gap-2 shadow-lg hover:scale-105 shimmer">
+                            <i class="fas fa-rocket" aria-hidden="true"></i>
                             <span>احجز الآن</span>
                         </a>
                     </div>
@@ -432,7 +443,7 @@
     <section class="relative min-h-screen flex items-center justify-center overflow-hidden">
         <!-- Background Image with Overlay -->
         <div class="absolute inset-0">
-            <img src="images/visa-hero.jpg" alt="Visa Services" width="1920" height="1080" fetchpriority="high" class="w-full h-full object-cover">
+            <img src="images/visa-hero.jpg" alt="Visa Services" width="1920" height="1080" fetchpriority="high" class="w-full h-full object-cover" style="content-visibility:auto">
             <div class="absolute inset-0 bg-gradient-to-br from-blue-900/95 via-blue-800/90 to-blue-900/95"></div>
         </div>
         <!-- Background Pattern -->
@@ -456,34 +467,34 @@
                 </h1>
                 
                 <!-- Subheading -->
-                <p class="text-xl md:text-2xl text-blue-100 mb-8 leading-relaxed">
+                <p class="text-xl md:text-2xl text-blue-50 mb-8 leading-relaxed font-semibold">
                     ✅ موعد مضمون | 🚀 إجراءات سريعة | 🏆 نسبة نجاح 99.8%
                 </p>
                 
                 <!-- Stats -->
                 <div class="flex flex-wrap justify-center gap-6 mb-10">
                     <div class="bg-white/10 backdrop-blur-lg rounded-2xl px-6 py-4 border border-white/20">
-                        <div class="text-3xl font-bold text-yellow-400">15,000+</div>
-                        <div class="text-sm text-blue-100">عميل راضٍ</div>
+                        <div class="text-3xl font-bold text-yellow-300">15,000+</div>
+                        <div class="text-sm text-blue-50 font-semibold">عميل راضٍ</div>
                     </div>
                     <div class="bg-white/10 backdrop-blur-lg rounded-2xl px-6 py-4 border border-white/20">
-                        <div class="text-3xl font-bold text-yellow-400">99.8%</div>
-                        <div class="text-sm text-blue-100">نسبة النجاح</div>
+                        <div class="text-3xl font-bold text-yellow-300">99.8%</div>
+                        <div class="text-sm text-blue-50 font-semibold">نسبة النجاح</div>
                     </div>
                     <div class="bg-white/10 backdrop-blur-lg rounded-2xl px-6 py-4 border border-white/20">
-                        <div class="text-3xl font-bold text-yellow-400">12 ساعة</div>
-                        <div class="text-sm text-blue-100">أسرع موعد</div>
+                        <div class="text-3xl font-bold text-yellow-300">12 ساعة</div>
+                        <div class="text-sm text-blue-50 font-semibold">أسرع موعد</div>
                     </div>
                 </div>
                 
                 <!-- CTA Buttons -->
                 <div class="flex flex-col sm:flex-row gap-4 justify-center mb-10">
-                    <a href="#booking" class="bg-yellow-400 hover:bg-yellow-500 text-blue-900 px-10 py-5 rounded-full font-bold text-lg transition-all transform hover:scale-105 shadow-2xl inline-flex items-center justify-center gap-3">
-                        <i class="fas fa-rocket"></i>
+                    <a href="#booking" aria-label="احجز موعد تأشيرة شنغن الآن" class="bg-yellow-400 hover:bg-yellow-500 text-blue-900 px-10 py-5 rounded-full font-bold text-lg transition-all transform hover:scale-105 shadow-2xl inline-flex items-center justify-center gap-3">
+                        <i class="fas fa-rocket" aria-hidden="true"></i>
                         احجز موعدك الآن
                     </a>
-                    <a href="https://wa.me/971544785539" class="bg-green-500 hover:bg-green-600 text-white px-10 py-5 rounded-full font-bold text-lg transition-all transform hover:scale-105 shadow-2xl inline-flex items-center justify-center gap-3">
-                        <i class="fab fa-whatsapp"></i>
+                    <a href="https://wa.me/971544785539" aria-label="تواصل معنا على واتساب للاستفسارات" class="bg-green-500 hover:bg-green-600 text-white px-10 py-5 rounded-full font-bold text-lg transition-all transform hover:scale-105 shadow-2xl inline-flex items-center justify-center gap-3">
+                        <i class="fab fa-whatsapp" aria-hidden="true"></i>
                         تواصل واتساب
                     </a>
                 </div>
@@ -558,11 +569,11 @@
         <div class="container mx-auto px-4">
             <!-- Services Image Showcase -->
             <div class="mb-16 rounded-3xl overflow-hidden shadow-2xl max-w-5xl mx-auto">
-                <div class="relative">
-                    <img src="images/visa-services.jpg" alt="خدمات التأشيرات" width="1200" height="800" loading="lazy" class="w-full h-auto">
+                <div class="relative" style="aspect-ratio:3/2;min-height:400px">
+                    <img src="images/visa-services.jpg" alt="خدمات التأشيرات" width="1200" height="800" loading="lazy" class="w-full h-full object-cover" style="content-visibility:auto">
                     <div class="absolute inset-0 bg-gradient-to-t from-blue-900/80 via-transparent to-transparent flex items-end">
                         <div class="p-8 text-white">
-                            <h3 class="text-3xl font-black mb-2">خدمات تأشيرات احترافية</h3>
+                            <p class="text-3xl font-black mb-2">خدمات تأشيرات احترافية</p>
                             <p class="text-lg text-blue-100">فريق من الخبراء المعتمدين دولياً لخدمتك</p>
                         </div>
                     </div>
@@ -585,7 +596,7 @@
                         <i class="fas fa-rocket text-blue-600 text-3xl"></i>
                     </div>
                     <h3 class="text-2xl font-bold text-gray-900 mb-3">سرعة خيالية</h3>
-                    <p class="text-gray-600 leading-relaxed">
+                    <p class="text-gray-700 leading-relaxed font-medium">
                         موعد مضمون خلال 12 ساعة فقط - الأسرع في المنطقة بالكامل
                     </p>
                 </div>
@@ -596,7 +607,7 @@
                         <i class="fas fa-check-double text-green-600 text-3xl"></i>
                     </div>
                     <h3 class="text-2xl font-bold text-gray-900 mb-3">نسبة نجاح 99.8%</h3>
-                    <p class="text-gray-600 leading-relaxed">
+                    <p class="text-gray-700 leading-relaxed font-medium">
                         أعلى معدل نجاح في الصناعة مع ضمان استرجاع المال
                     </p>
                 </div>
@@ -607,7 +618,7 @@
                         <i class="fas fa-user-tie text-yellow-600 text-3xl"></i>
                     </div>
                     <h3 class="text-2xl font-bold text-gray-900 mb-3">خبراء معتمدون</h3>
-                    <p class="text-gray-600 leading-relaxed">
+                    <p class="text-gray-700 leading-relaxed font-medium">
                         فريق محترف من الخبراء المعتمدين دولياً
                     </p>
                 </div>
@@ -618,7 +629,7 @@
                         <i class="fas fa-headset text-purple-600 text-3xl"></i>
                     </div>
                     <h3 class="text-2xl font-bold text-gray-900 mb-3">دعم 24/7</h3>
-                    <p class="text-gray-600 leading-relaxed">
+                    <p class="text-gray-700 leading-relaxed font-medium">
                         فريق دعم متاح على مدار الساعة لمساعدتك
                     </p>
                 </div>
@@ -629,7 +640,7 @@
                         <i class="fas fa-shield-halved text-red-600 text-3xl"></i>
                     </div>
                     <h3 class="text-2xl font-bold text-gray-900 mb-3">آمن ومضمون</h3>
-                    <p class="text-gray-600 leading-relaxed">
+                    <p class="text-gray-700 leading-relaxed font-medium">
                         حماية كاملة لبياناتك ومعلوماتك الشخصية
                     </p>
                 </div>
@@ -640,7 +651,7 @@
                         <i class="fas fa-dollar-sign text-indigo-600 text-3xl"></i>
                     </div>
                     <h3 class="text-2xl font-bold text-gray-900 mb-3">أسعار تنافسية</h3>
-                    <p class="text-gray-600 leading-relaxed">
+                    <p class="text-gray-700 leading-relaxed font-medium">
                         أفضل الأسعار في السوق مع جودة عالية
                     </p>
                 </div>
@@ -1681,8 +1692,6 @@
                         'value': pageLoadTime
                     });
                 }
-                
-                console.log('Page Load Time:', pageLoadTime + 'ms');
             }
         });
         
