@@ -82,6 +82,16 @@
     # WWW to non-WWW redirect
     RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
     RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
+    
+    # Mobile Detection - Serve mobile-optimized.html to mobile devices
+    # Uncomment below to enable automatic mobile version
+    # RewriteCond %{HTTP_USER_AGENT} "android|blackberry|ipad|iphone|ipod|iemobile|opera mobile|palmos|webos|googlebot-mobile" [NC]
+    # RewriteCond %{REQUEST_URI} ^/$
+    # RewriteRule ^$ /mobile-optimized.html [L]
+    
+    # RewriteCond %{HTTP_USER_AGENT} "android|blackberry|ipad|iphone|ipod|iemobile|opera mobile|palmos|webos|googlebot-mobile" [NC]
+    # RewriteCond %{REQUEST_URI} ^/index\.html$
+    # RewriteRule ^index\.html$ /mobile-optimized.html [L]
 </IfModule>
 
 # Prevent Directory Listing
