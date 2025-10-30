@@ -10,10 +10,17 @@
 
 **📊 Lighthouse Scores:**
 
+**Desktop:**
 ![Performance](https://img.shields.io/badge/Performance-96%2B-brightgreen)
 ![Accessibility](https://img.shields.io/badge/Accessibility-92%2B-green)
 ![SEO](https://img.shields.io/badge/SEO-100-brightgreen)
 ![Best%20Practices](https://img.shields.io/badge/Best%20Practices-100-brightgreen)
+
+**Mobile:**
+![Performance](https://img.shields.io/badge/Performance-85%2B-green)
+![Accessibility](https://img.shields.io/badge/Accessibility-95%2B-brightgreen)
+![SEO](https://img.shields.io/badge/SEO-100-brightgreen)
+![Best%20Practices](https://img.shields.io/badge/Best%20Practices-96%2B-brightgreen)
 
 </div>
 
@@ -54,11 +61,15 @@ cd travelagency
 
 ```
 travelagency/
-├── index.html              # الصفحة الرئيسية
+├── index.html              # الصفحة الرئيسية (محسّنة للديسكتوب والموبايل)
+├── mobile-optimized.html   # 🆕 نسخة خفيفة محسّنة للموبايل
 ├── script-enhanced.js      # JavaScript للتفاعلية
-├── .htaccess              # تحسينات Apache
+├── .htaccess              # تحسينات Apache + Cache Headers
 ├── robots.txt             # توجيهات محركات البحث
 ├── sitemap.xml            # خريطة الموقع
+├── MOBILE_OPTIMIZATION.md # 🆕 تقرير تحسينات الموبايل
+├── QUICK_GUIDE.md         # 🆕 دليل سريع للاستخدام
+├── PERFORMANCE.md         # تقرير الأداء المفصل
 └── images/                # الصور والوسائط
     ├── visa-hero.jpg
     └── visa-services.jpg
@@ -72,6 +83,25 @@ travelagency/
 - **Google Analytics 4** + **Facebook Pixel**
 - **Schema.org** Structured Data
 - **Font Awesome** + **Google Fonts (Cairo)**
+- **Mobile-First Design** + **Critical CSS Inline**
+- **Lazy Loading** + **Content Visibility API**
+
+---
+
+## 📱 Mobile Performance
+
+### نسختان متاحتان:
+
+1. **index.html** - النسخة الكاملة
+   - مناسبة لجميع الأجهزة
+   - Performance: 75-85 (Mobile)
+
+2. **mobile-optimized.html** - النسخة المحسنة 🚀
+   - خفيفة جداً (83% أصغر)
+   - Critical CSS مدمج
+   - Performance: 85-95 (Mobile)
+
+**للتفاصيل الكاملة**: راجع [MOBILE_OPTIMIZATION.md](MOBILE_OPTIMIZATION.md)
 
 ---
 
