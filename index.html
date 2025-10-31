@@ -42,6 +42,7 @@
     <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
     <link rel="preload" href="images/visa-hero.webp" as="image" type="image/webp" fetchpriority="high">
     <link rel="preload" href="https://cdn.tailwindcss.com" as="script">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style">
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin>
     
     <!-- Tailwind CSS - Load synchronously to prevent CLS -->
@@ -137,42 +138,6 @@
     }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="all">
-    
-    <!-- Fallback for icons if Font Awesome doesn't load -->
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Check if Font Awesome loaded properly
-        setTimeout(function() {
-            const testIcon = document.createElement('i');
-            testIcon.className = 'fas fa-home';
-            testIcon.style.position = 'absolute';
-            testIcon.style.left = '-9999px';
-            document.body.appendChild(testIcon);
-            
-            const computed = getComputedStyle(testIcon);
-            if (computed.fontFamily.indexOf('Font Awesome') === -1) {
-                // Font Awesome failed to load, use fallback
-                console.log('Font Awesome loading issue detected, applying fallback styles');
-                const style = document.createElement('style');
-                style.textContent = `
-                    .fas, .fab, .far { 
-                        font-family: Arial, sans-serif !important;
-                    }
-                    .fa-whatsapp:before { content: "W"; }
-                    .fa-phone:before { content: "📞"; }
-                    .fa-arrow-up:before { content: "↑"; }
-                    .fa-chevron-down:before { content: "↓"; }
-                    .fa-check:before { content: "✓"; }
-                    .fa-rocket:before { content: "🚀"; }
-                    .fa-crown:before { content: "👑"; }
-                `;
-                document.head.appendChild(style);
-            }
-            document.body.removeChild(testIcon);
-        }, 1000);
-    });
-    </script>
-    
     <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
     
     <!-- Structured Data / Schema.org for SEO -->
@@ -1488,16 +1453,22 @@
         // Essential mobile-optimized JavaScript only
         document.addEventListener('DOMContentLoaded', function() {
             
-            // Sticky Header - lightweight
+            // Sticky Header - highly optimized to prevent reflow
             let ticking = false;
+            let lastScrollY = 0;
             const stickyHeader = document.getElementById('stickyHeader');
             
             function updateHeader() {
                 const currentScroll = window.pageYOffset;
-                if (currentScroll > 300) {
-                    stickyHeader.style.transform = 'translateY(0)';
-                } else {
-                    stickyHeader.style.transform = 'translateY(-100%)';
+                
+                // Only update if scroll changed significantly
+                if (Math.abs(currentScroll - lastScrollY) > 10) {
+                    if (currentScroll > 300 && lastScrollY <= 300) {
+                        stickyHeader.style.transform = 'translateY(0)';
+                    } else if (currentScroll <= 300 && lastScrollY > 300) {
+                        stickyHeader.style.transform = 'translateY(-100%)';
+                    }
+                    lastScrollY = currentScroll;
                 }
                 ticking = false;
             }
@@ -1507,7 +1478,7 @@
                     requestAnimationFrame(updateHeader);
                     ticking = true;
                 }
-            });
+            }, { passive: true });
             
             // Multi-Step Form - simplified
             let currentFormStep = 1;
@@ -1599,49 +1570,76 @@
                 element.style.transform = 'translateY(0)';
             });
             
-            // Back to Top functionality
+            // Back to Top functionality - optimized
             const backToTop = document.getElementById('backToTop');
+            let backToTopVisible = false;
+            
             if (backToTop) {
-                window.addEventListener('scroll', () => {
-                    if (window.pageYOffset > 300) {
+                function updateBackToTop() {
+                    const currentScroll = window.pageYOffset;
+                    const shouldShow = currentScroll > 300;
+                    
+                    if (shouldShow && !backToTopVisible) {
                         backToTop.classList.remove('hidden');
                         backToTop.classList.add('flex');
-                    } else {
+                        backToTopVisible = true;
+                    } else if (!shouldShow && backToTopVisible) {
                         backToTop.classList.add('hidden');
                         backToTop.classList.remove('flex');
+                        backToTopVisible = false;
                     }
-                });
+                }
+                
+                // Use the same scroll event with throttling
+                window.addEventListener('scroll', () => {
+                    if (!ticking) {
+                        requestAnimationFrame(() => {
+                            updateHeader();
+                            updateBackToTop();
+                            ticking = false;
+                        });
+                        ticking = true;
+                    }
+                }, { passive: true });
                 
                 backToTop.addEventListener('click', () => {
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 });
             }
             
-            // Countdown Timer functionality
-            function updateCountdown() {
-                const now = new Date();
-                const tomorrow = new Date(now);
-                tomorrow.setDate(now.getDate() + 1);
-                tomorrow.setHours(0, 0, 0, 0);
-                
-                const timeLeft = tomorrow - now;
-                
-                const hours = Math.floor(timeLeft / (1000 * 60 * 60));
-                const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
-                
-                const hoursEl = document.getElementById('hours');
-                const minutesEl = document.getElementById('minutes');
-                const secondsEl = document.getElementById('seconds');
-                
-                if (hoursEl) hoursEl.textContent = hours.toString().padStart(2, '0');
-                if (minutesEl) minutesEl.textContent = minutes.toString().padStart(2, '0');
-                if (secondsEl) secondsEl.textContent = seconds.toString().padStart(2, '0');
-            }
+            // Countdown Timer functionality - optimized
+            let countdownInterval;
+            const hoursEl = document.getElementById('hours');
+            const minutesEl = document.getElementById('minutes');
+            const secondsEl = document.getElementById('seconds');
             
-            // Update countdown every second
-            updateCountdown();
-            setInterval(updateCountdown, 1000);
+            if (hoursEl && minutesEl && secondsEl) {
+                function updateCountdown() {
+                    const now = new Date();
+                    const tomorrow = new Date(now);
+                    tomorrow.setDate(now.getDate() + 1);
+                    tomorrow.setHours(0, 0, 0, 0);
+                    
+                    const timeLeft = tomorrow - now;
+                    
+                    const hours = Math.floor(timeLeft / (1000 * 60 * 60));
+                    const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+                    
+                    // Only update if values changed
+                    const newHours = hours.toString().padStart(2, '0');
+                    const newMinutes = minutes.toString().padStart(2, '0');
+                    const newSeconds = seconds.toString().padStart(2, '0');
+                    
+                    if (hoursEl.textContent !== newHours) hoursEl.textContent = newHours;
+                    if (minutesEl.textContent !== newMinutes) minutesEl.textContent = newMinutes;
+                    if (secondsEl.textContent !== newSeconds) secondsEl.textContent = newSeconds;
+                }
+                
+                // Update countdown every second
+                updateCountdown();
+                countdownInterval = setInterval(updateCountdown, 1000);
+            }
         });
         
         // Modal close function
