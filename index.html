@@ -37,10 +37,12 @@
     <!-- Performance Optimization -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
     <link rel="dns-prefetch" href="//cdn.tailwindcss.com">
     <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
     <link rel="preload" href="images/visa-hero.webp" as="image" type="image/webp" fetchpriority="high">
     <link rel="preload" href="https://cdn.tailwindcss.com" as="script">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin>
     
     <!-- Tailwind CSS - Load synchronously to prevent CLS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -64,8 +66,16 @@
     </script>
     
     <!-- Google Fonts - Optimized with font-display swap -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;700;800;900&display=swap" as="style">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'; this.onload=null;">
     <noscript><link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;700;800;900&display=swap" rel="stylesheet"></noscript>
+    
+    <!-- Critical CSS for instant font rendering -->
+    <style>
+    * {
+        font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+    }
+    </style>
     
     <!-- Font Awesome - Latest version with font-display optimization -->
     <style>
