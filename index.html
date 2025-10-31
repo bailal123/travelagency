@@ -172,35 +172,6 @@
     }
     </script>
     
-    <!-- Google Analytics 4 -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-XXXXXXXXXX', {
-        'send_page_view': true,
-        'anonymize_ip': true
-      });
-    </script>
-    
-    <!-- Facebook Pixel -->
-    <script>
-      !function(f,b,e,v,n,t,s)
-      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-      n.queue=[];t=b.createElement(e);t.async=!0;
-      t.src=v;s=b.getElementsByTagName(e)[0];
-      s.parentNode.insertBefore(t,s)}(window, document,'script',
-      'https://connect.facebook.net/en_US/fbevents.js');
-      fbq('init', 'YOUR_PIXEL_ID');
-      fbq('track', 'PageView');
-    </script>
-    <noscript><img height="1" width="1" style="display:none"
-      src="https://www.facebook.com/tr?id=YOUR_PIXEL_ID&ev=PageView&noscript=1"
-    /></noscript>
-    
     <!-- Custom Styles for Arabic RTL & Advanced Animations -->
     <style>
         body {
@@ -427,19 +398,19 @@
                     ✅ موعد مضمون | 🚀 إجراءات سريعة | 🏆 نسبة نجاح 99.8%
                 </p>
                 
-                <!-- Stats -->
-                <div class="flex flex-wrap justify-center gap-6 mb-10">
-                    <div class="bg-white/10 backdrop-blur-lg rounded-2xl px-6 py-4 border border-white/20">
-                        <div class="text-3xl font-bold text-yellow-300">15,000+</div>
-                        <div class="text-sm text-blue-50 font-semibold">عميل راضٍ</div>
+                <!-- Stats - Fixed dimensions to prevent CLS -->
+                <div class="flex flex-wrap justify-center gap-6 mb-10" style="min-height: 96px;">
+                    <div class="bg-white/10 backdrop-blur-lg rounded-2xl px-6 py-4 border border-white/20" style="width: 140px; height: 80px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                        <div class="text-3xl font-bold text-yellow-300" style="line-height: 1;">15,000+</div>
+                        <div class="text-sm text-blue-50 font-semibold" style="line-height: 1;">عميل راضٍ</div>
                     </div>
-                    <div class="bg-white/10 backdrop-blur-lg rounded-2xl px-6 py-4 border border-white/20">
-                        <div class="text-3xl font-bold text-yellow-300">99.8%</div>
-                        <div class="text-sm text-blue-50 font-semibold">نسبة النجاح</div>
+                    <div class="bg-white/10 backdrop-blur-lg rounded-2xl px-6 py-4 border border-white/20" style="width: 140px; height: 80px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                        <div class="text-3xl font-bold text-yellow-300" style="line-height: 1;">99.8%</div>
+                        <div class="text-sm text-blue-50 font-semibold" style="line-height: 1;">نسبة النجاح</div>
                     </div>
-                    <div class="bg-white/10 backdrop-blur-lg rounded-2xl px-6 py-4 border border-white/20">
-                        <div class="text-3xl font-bold text-yellow-300">12 ساعة</div>
-                        <div class="text-sm text-blue-50 font-semibold">أسرع موعد</div>
+                    <div class="bg-white/10 backdrop-blur-lg rounded-2xl px-6 py-4 border border-white/20" style="width: 140px; height: 80px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                        <div class="text-3xl font-bold text-yellow-300" style="line-height: 1;">12 ساعة</div>
+                        <div class="text-sm text-blue-50 font-semibold" style="line-height: 1;">أسرع موعد</div>
                     </div>
                 </div>
                 
@@ -1561,77 +1532,42 @@
         // Track User Engagement
         let engagementScore = 0;
         
-        // Track scroll depth
+        // Track scroll depth - optimized for performance
         let maxScrollDepth = 0;
         window.addEventListener('scroll', () => {
             const scrollPercent = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
             if (scrollPercent > maxScrollDepth) {
                 maxScrollDepth = Math.floor(scrollPercent / 25) * 25;
-                if (maxScrollDepth > 0 && typeof gtag !== 'undefined') {
-                    gtag('event', 'scroll_depth', {
-                        'event_category': 'engagement',
-                        'event_label': maxScrollDepth + '%',
-                        'value': maxScrollDepth
-                    });
-                }
+                // Tracking removed for performance optimization
             }
         });
         
-        // Track time on page
+        // Track time on page - optimized for performance
         let timeOnPage = 0;
         setInterval(() => {
             timeOnPage += 10;
-            if (timeOnPage % 60 === 0 && typeof gtag !== 'undefined') {
-                gtag('event', 'time_on_page', {
-                    'event_category': 'engagement',
-                    'event_label': Math.floor(timeOnPage / 60) + ' minutes',
-                    'value': timeOnPage
-                });
-            }
+            // Tracking removed for performance optimization
         }, 10000);
         
         // Track CTA clicks
         document.querySelectorAll('a[href="#booking"]').forEach(btn => {
             btn.addEventListener('click', () => {
-                if (typeof gtag !== 'undefined') {
-                    gtag('event', 'cta_click', {
-                        'event_category': 'conversion',
-                        'event_label': btn.textContent.trim()
-                    });
-                }
-                if (typeof fbq !== 'undefined') {
-                    fbq('track', 'InitiateCheckout');
-                }
+                // Tracking removed for performance optimization
+                console.log('CTA clicked:', btn.textContent.trim());
             });
         });
         
         // Track WhatsApp clicks
         document.querySelectorAll('a[href*="wa.me"]').forEach(btn => {
             btn.addEventListener('click', () => {
-                if (typeof gtag !== 'undefined') {
-                    gtag('event', 'whatsapp_click', {
-                        'event_category': 'engagement',
-                        'event_label': 'WhatsApp Button'
-                    });
-                }
-                if (typeof fbq !== 'undefined') {
-                    fbq('track', 'Contact');
-                }
+                console.log('WhatsApp clicked');
             });
         });
         
         // Track Phone clicks
         document.querySelectorAll('a[href^="tel:"]').forEach(btn => {
             btn.addEventListener('click', () => {
-                if (typeof gtag !== 'undefined') {
-                    gtag('event', 'phone_click', {
-                        'event_category': 'engagement',
-                        'event_label': 'Phone Button'
-                    });
-                }
-                if (typeof fbq !== 'undefined') {
-                    fbq('track', 'Contact');
-                }
+                console.log('Phone clicked');
             });
         });
         
@@ -1640,14 +1576,8 @@
             if ('performance' in window) {
                 const perfData = window.performance.timing;
                 const pageLoadTime = perfData.loadEventEnd - perfData.navigationStart;
-                
-                if (typeof gtag !== 'undefined') {
-                    gtag('event', 'page_load_time', {
-                        'event_category': 'performance',
-                        'event_label': 'milliseconds',
-                        'value': pageLoadTime
-                    });
-                }
+                console.log('Page load time:', pageLoadTime, 'ms');
+                // Tracking removed for performance optimization
             }
         });
         
