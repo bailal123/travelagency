@@ -93,6 +93,13 @@
     .cairo-loaded * {
         font-family: 'Cairo', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif !important;
     }
+    
+    /* Reveal animations - simplified for performance */
+    .reveal {
+        opacity: 1 !important;
+        transform: translateY(0) !important;
+        transition: all 0.3s ease !important;
+    }
     </style>
     
     <!-- Font Awesome - Latest version with font-display optimization -->
@@ -112,7 +119,7 @@
         src: url(https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/webfonts/fa-brands-400.woff2) format('woff2');
     }
     </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print" onload="this.media='all'; this.onload=null;">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="all">
     <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
     
     <!-- Structured Data / Schema.org for SEO -->
@@ -1516,6 +1523,72 @@
                     }
                 });
             });
+            
+            // FAQ Toggle functionality
+            document.querySelectorAll('.faq-question').forEach(question => {
+                question.addEventListener('click', () => {
+                    const answer = question.nextElementSibling;
+                    const icon = question.querySelector('i');
+                    
+                    if (answer.style.display === 'none' || answer.style.display === '') {
+                        answer.style.display = 'block';
+                        if (icon) icon.style.transform = 'rotate(180deg)';
+                    } else {
+                        answer.style.display = 'none';
+                        if (icon) icon.style.transform = 'rotate(0deg)';
+                    }
+                });
+            });
+            
+            // Make all reveal elements visible immediately (performance optimization)
+            document.querySelectorAll('.reveal').forEach(element => {
+                element.style.opacity = '1';
+                element.style.transform = 'translateY(0)';
+            });
+            
+            // Back to Top functionality
+            const backToTop = document.getElementById('backToTop');
+            if (backToTop) {
+                window.addEventListener('scroll', () => {
+                    if (window.pageYOffset > 300) {
+                        backToTop.classList.remove('hidden');
+                        backToTop.classList.add('flex');
+                    } else {
+                        backToTop.classList.add('hidden');
+                        backToTop.classList.remove('flex');
+                    }
+                });
+                
+                backToTop.addEventListener('click', () => {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            }
+            
+            // Countdown Timer functionality
+            function updateCountdown() {
+                const now = new Date();
+                const tomorrow = new Date(now);
+                tomorrow.setDate(now.getDate() + 1);
+                tomorrow.setHours(0, 0, 0, 0);
+                
+                const timeLeft = tomorrow - now;
+                
+                const hours = Math.floor(timeLeft / (1000 * 60 * 60));
+                const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+                
+                const hoursEl = document.getElementById('hours');
+                const minutesEl = document.getElementById('minutes');
+                const secondsEl = document.getElementById('seconds');
+                
+                if (hoursEl) hoursEl.textContent = hours.toString().padStart(2, '0');
+                if (minutesEl) minutesEl.textContent = minutes.toString().padStart(2, '0');
+                if (secondsEl) secondsEl.textContent = seconds.toString().padStart(2, '0');
+            }
+            
+            // Update countdown every second
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
         });
         
         // Modal close function
