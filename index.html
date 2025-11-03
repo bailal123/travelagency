@@ -38,7 +38,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
     <link rel="dns-prefetch" href="//cdn.tailwindcss.com">
     <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
     <link rel="preload" href="images/mainimage.webp" as="image" type="image/webp" fetchpriority="high">
@@ -103,66 +103,37 @@
     }
     </style>
     
-    <!-- Font Awesome - Latest version with font-display optimization -->
-    <style>
-    @font-face {
-        font-family: 'Font Awesome 6 Free';
-        font-style: normal;
-        font-weight: 900;
-        font-display: swap;
-        src: url(https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/webfonts/fa-solid-900.woff2) format('woff2');
-        unicode-range: U+f000-f2ff;
-    }
-    @font-face {
-        font-family: 'Font Awesome 6 Brands';
-        font-style: normal;
-        font-weight: 400;
-        font-display: swap;
-        src: url(https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/webfonts/fa-brands-400.woff2) format('woff2');
-        unicode-range: U+f000-f2ff;
-    }
-    
-    /* Ensure Font Awesome icons display properly */
-    .fas, .far, .fab {
-        font-family: 'Font Awesome 6 Free', 'Font Awesome 6 Brands' !important;
-        font-weight: 900;
-        font-style: normal;
-        font-variant: normal;
-        text-rendering: auto;
-        -webkit-font-smoothing: antialiased;
-    }
-    
-    .fab {
-        font-family: 'Font Awesome 6 Brands' !important;
-        font-weight: 400;
-    }
-    </style>
+    <!-- Font Awesome inline @font-face removed to avoid early webfont fetches; external CSS handles font rules -->
         <!-- Load Font Awesome CSS immediately on desktop only; lazy-load on mobile via script below -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="(min-width: 768px)">
         <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="all"></noscript>
 
-        <script>
-            // Lazy-load Font Awesome CSS on mobile after idle to avoid early webfont downloads
-            (function(){
-                try {
-                    var isMobile = window.matchMedia && window.matchMedia('(max-width: 767px)').matches;
-                    if (!isMobile) return;
-                    function loadFA(){
-                        if (document.getElementById('fa-css')) return;
-                        var l = document.createElement('link');
-                        l.id = 'fa-css';
-                        l.rel = 'stylesheet';
-                        l.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css';
-                        document.head.appendChild(l);
-                    }
-                    if ('requestIdleCallback' in window) {
-                        requestIdleCallback(loadFA, { timeout: 3000 });
-                    } else {
-                        window.addEventListener('load', function(){ setTimeout(loadFA, 1200); });
-                    }
-                } catch(e) {}
-            })();
-        </script>
+            <script>
+                // Lazy-load Font Awesome CSS on mobile after first interaction or a longer timeout
+                (function(){
+                    try {
+                        var isMobile = window.matchMedia && window.matchMedia('(max-width: 767px)').matches;
+                        if (!isMobile) return;
+                        function loadFA(){
+                            if (document.getElementById('fa-css')) return;
+                            var l = document.createElement('link');
+                            l.id = 'fa-css';
+                            l.rel = 'stylesheet';
+                            l.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css';
+                            document.head.appendChild(l);
+                            // cleanup listeners after load
+                            ['touchstart','scroll','keydown','mousemove'].forEach(function(evt){
+                                window.removeEventListener(evt, onFirstInteraction, { passive: true });
+                            });
+                        }
+                        function onFirstInteraction(){ loadFA(); }
+                        ['touchstart','scroll','keydown','mousemove'].forEach(function(evt){
+                            window.addEventListener(evt, onFirstInteraction, { passive: true, once: true });
+                        });
+                        window.addEventListener('load', function(){ setTimeout(loadFA, 6000); });
+                    } catch(e) {}
+                })();
+            </script>
     
     <!-- Structured Data / Schema.org for SEO -->
     <script type="application/ld+json">
@@ -373,7 +344,9 @@
                     
                     <!-- Irresistible Offer -->
                     <div class="flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-full font-bold text-sm">
-                        <i class="fas fa-fire text-orange-600 text-2xl"></i>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6 text-orange-600" fill="currentColor" aria-hidden="true" focusable="false">
+                            <path d="M12 2s5 5 5 10a5 5 0 11-10 0C7 7 12 2 12 2z"/>
+                        </svg>
                         <span class="hidden sm:inline">عرض حصري!</span>
                         <span class="font-black">خصم 30%</span>
                         <span class="hidden md:inline">+ استشارة VIP مجانية</span>
@@ -382,11 +355,11 @@
                     <!-- CTA Buttons -->
                     <div class="flex items-center gap-2">
                         <a href="https://wa.me/971508248101" aria-label="تواصل معنا عبر واتساب" class="bg-green-700 hover:bg-green-800 text-white px-4 py-2 rounded-full font-bold text-sm transition-all flex items-center gap-2 shadow-lg hover:scale-105">
-                            <i class="fab fa-whatsapp text-lg" aria-hidden="true"></i>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="5" width="18" height="12" rx="3" ry="3"></rect><path d="M8 17l-4 4v-4"></path></svg>
                             <span class="hidden sm:inline">واتساب</span>
                         </a>
                         <a href="#booking" aria-label="احجز موعدك الآن" class="bg-yellow-400 hover:bg-yellow-500 text-blue-900 px-6 py-2 rounded-full font-black text-sm transition-all flex items-center gap-2 shadow-lg hover:scale-105">
-                            <i class="fas fa-rocket" aria-hidden="true"></i>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M14 2l8 8-5 1-1 5-8-8 6-2z"></path><path d="M5 19l4-4"></path><circle cx="15" cy="9" r="1"></circle></svg>
                             <span>احجز الآن</span>
                         </a>
                     </div>
@@ -453,7 +426,7 @@
             <div class="max-w-4xl mx-auto text-center">
                 <!-- Badge -->
                 <div class="inline-flex items-center gap-2 bg-yellow-400 text-blue-900 px-6 py-3 rounded-full font-bold text-sm mb-8">
-                    <i class="fas fa-crown"></i>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-4 h-4" fill="currentColor" aria-hidden="true" focusable="false"><path d="M3 7l4 4 5-7 5 7 4-4v11H3V7z"/></svg>
                     <span>أسرع خدمة تأشيرات في الخليج</span>
                 </div>
                 
@@ -487,11 +460,11 @@
                 <!-- CTA Buttons -->
                 <div class="flex flex-col sm:flex-row gap-4 justify-center mb-10">
                     <a href="#booking" aria-label="احجز موعد تأشيرة شنغن الآن" class="bg-yellow-400 hover:bg-yellow-500 text-blue-900 px-10 py-5 rounded-full font-bold text-lg transition-all transform hover:scale-105 shadow-2xl inline-flex items-center justify-center gap-3">
-                        <i class="fas fa-rocket" aria-hidden="true"></i>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M14 2l8 8-5 1-1 5-8-8 6-2z"></path><path d="M5 19l4-4"></path><circle cx="15" cy="9" r="1"></circle></svg>
                         احجز موعدك الآن
                     </a>
                     <a href="https://wa.me/971508248101" aria-label="تواصل معنا على واتساب للاستفسارات" class="bg-green-700 hover:bg-green-800 text-white px-10 py-5 rounded-full font-bold text-lg transition-all transform hover:scale-105 shadow-2xl inline-flex items-center justify-center gap-3">
-                        <i class="fab fa-whatsapp" aria-hidden="true"></i>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="5" width="18" height="12" rx="3" ry="3"></rect><path d="M8 17l-4 4v-4"></path></svg>
                         تواصل واتساب
                     </a>
                 </div>
@@ -521,7 +494,7 @@
         
         <!-- Scroll Indicator -->
         <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2">
-            <i class="fas fa-chevron-down text-white text-2xl opacity-75"></i>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6 text-white opacity-75" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polyline points="6 9 12 15 18 9"></polyline></svg>
         </div>
     </section>
 
@@ -530,28 +503,28 @@
         <div class="container mx-auto px-4">
             <div class="flex flex-wrap justify-center items-center gap-8 text-center">
                 <div class="flex items-center gap-3">
-                    <i class="fas fa-shield text-green-600 text-3xl"></i>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 2l7 4v6c0 5-3.5 9-7 10-3.5-1-7-5-7-10V6l7-4z"/></svg>
                     <div class="text-right">
                         <div class="font-bold text-gray-900">معتمد رسمياً</div>
                         <div class="text-sm text-gray-600">من السفارات الأوروبية</div>
                     </div>
                 </div>
                 <div class="flex items-center gap-3">
-                    <i class="fas fa-clock text-blue-600 text-3xl"></i>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
                     <div class="text-right">
                         <div class="font-bold text-gray-900">خدمة 24/7</div>
                         <div class="text-sm text-gray-600">دعم على مدار الساعة</div>
                     </div>
                 </div>
                 <div class="flex items-center gap-3">
-                    <i class="fas fa-medal text-yellow-600 text-3xl"></i>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="8" r="4"/><path d="M8 12l-4 8 8-4 8 4-4-8"/></svg>
                     <div class="text-right">
                         <div class="font-bold text-gray-900">15 سنة خبرة</div>
                         <div class="text-sm text-gray-600">في مجال التأشيرات</div>
                     </div>
                 </div>
                 <div class="flex items-center gap-3">
-                    <i class="fas fa-users text-purple-600 text-3xl"></i>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="9" cy="8" r="4"/><path d="M17 11a4 4 0 100-8 4 4 0 000 8z"/><path d="M2 22c0-3.9 3.1-7 7-7"/><path d="M15 15c3.9 0 7 3.1 7 7"/></svg>
                     <div class="text-right">
                         <div class="font-bold text-gray-900" id="visitorCounter">1,247</div>
                         <div class="text-sm text-gray-600">زائر الآن</div>
@@ -685,19 +658,19 @@
             <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
                 <!-- Testimonial 1 -->
                 <div class="bg-white rounded-3xl p-8 shadow-2xl">
-                    <div class="flex items-center gap-2 mb-4">
-                        <i class="fas fa-star text-yellow-400"></i>
-                        <i class="fas fa-star text-yellow-400"></i>
-                        <i class="fas fa-star text-yellow-400"></i>
-                        <i class="fas fa-star text-yellow-400"></i>
-                        <i class="fas fa-star text-yellow-400"></i>
+                    <div class="flex items-center gap-2 mb-4 text-yellow-400">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5" fill="currentColor" aria-hidden="true"><path d="M12 2l3 6 6 .9-4.5 4.1 1.2 6L12 16.9 6.3 19l1.2-6L3 8.9 9 8l3-6z"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5" fill="currentColor" aria-hidden="true"><path d="M12 2l3 6 6 .9-4.5 4.1 1.2 6L12 16.9 6.3 19l1.2-6L3 8.9 9 8l3-6z"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5" fill="currentColor" aria-hidden="true"><path d="M12 2l3 6 6 .9-4.5 4.1 1.2 6L12 16.9 6.3 19l1.2-6L3 8.9 9 8l3-6z"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5" fill="currentColor" aria-hidden="true"><path d="M12 2l3 6 6 .9-4.5 4.1 1.2 6L12 16.9 6.3 19l1.2-6L3 8.9 9 8l3-6z"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5" fill="currentColor" aria-hidden="true"><path d="M12 2l3 6 6 .9-4.5 4.1 1.2 6L12 16.9 6.3 19l1.2-6L3 8.9 9 8l3-6z"/></svg>
                     </div>
                     <p class="text-gray-700 mb-6 leading-relaxed">
                         "خدمة رائعة وسريعة جداً! حصلت على موعد خلال 10 ساعات فقط. فريق محترف ومتعاون."
                     </p>
                     <div class="flex items-center gap-4">
                         <div class="bg-blue-600 w-12 h-12 rounded-full flex items-center justify-center">
-                            <i class="fas fa-user text-white"></i>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M6 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/></svg>
                         </div>
                         <div>
                             <div class="font-bold text-gray-900">أحمد المحمدي</div>
@@ -708,19 +681,19 @@
 
                 <!-- Testimonial 2 -->
                 <div class="bg-white rounded-3xl p-8 shadow-2xl">
-                    <div class="flex items-center gap-2 mb-4">
-                        <i class="fas fa-star text-yellow-400"></i>
-                        <i class="fas fa-star text-yellow-400"></i>
-                        <i class="fas fa-star text-yellow-400"></i>
-                        <i class="fas fa-star text-yellow-400"></i>
-                        <i class="fas fa-star text-yellow-400"></i>
+                    <div class="flex items-center gap-2 mb-4 text-yellow-400">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5" fill="currentColor" aria-hidden="true"><path d="M12 2l3 6 6 .9-4.5 4.1 1.2 6L12 16.9 6.3 19l1.2-6L3 8.9 9 8l3-6z"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5" fill="currentColor" aria-hidden="true"><path d="M12 2l3 6 6 .9-4.5 4.1 1.2 6L12 16.9 6.3 19l1.2-6L3 8.9 9 8l3-6z"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5" fill="currentColor" aria-hidden="true"><path d="M12 2l3 6 6 .9-4.5 4.1 1.2 6L12 16.9 6.3 19l1.2-6L3 8.9 9 8l3-6z"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5" fill="currentColor" aria-hidden="true"><path d="M12 2l3 6 6 .9-4.5 4.1 1.2 6L12 16.9 6.3 19l1.2-6L3 8.9 9 8l3-6z"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5" fill="currentColor" aria-hidden="true"><path d="M12 2l3 6 6 .9-4.5 4.1 1.2 6L12 16.9 6.3 19l1.2-6L3 8.9 9 8l3-6z"/></svg>
                     </div>
                     <p class="text-gray-700 mb-6 leading-relaxed">
                         "نسبة النجاح عالية جداً! تم قبول تأشيرتي من أول مرة. شكراً للفريق الرائع."
                     </p>
                     <div class="flex items-center gap-4">
                         <div class="bg-blue-600 w-12 h-12 rounded-full flex items-center justify-center">
-                            <i class="fas fa-user text-white"></i>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M6 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/></svg>
                         </div>
                         <div>
                             <div class="font-bold text-gray-900">فاطمة الزهراني</div>
@@ -731,19 +704,19 @@
 
                 <!-- Testimonial 3 -->
                 <div class="bg-white rounded-3xl p-8 shadow-2xl">
-                    <div class="flex items-center gap-2 mb-4">
-                        <i class="fas fa-star text-yellow-400"></i>
-                        <i class="fas fa-star text-yellow-400"></i>
-                        <i class="fas fa-star text-yellow-400"></i>
-                        <i class="fas fa-star text-yellow-400"></i>
-                        <i class="fas fa-star text-yellow-400"></i>
+                    <div class="flex items-center gap-2 mb-4 text-yellow-400">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5" fill="currentColor" aria-hidden="true"><path d="M12 2l3 6 6 .9-4.5 4.1 1.2 6L12 16.9 6.3 19l1.2-6L3 8.9 9 8l3-6z"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5" fill="currentColor" aria-hidden="true"><path d="M12 2l3 6 6 .9-4.5 4.1 1.2 6L12 16.9 6.3 19l1.2-6L3 8.9 9 8l3-6z"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5" fill="currentColor" aria-hidden="true"><path d="M12 2l3 6 6 .9-4.5 4.1 1.2 6L12 16.9 6.3 19l1.2-6L3 8.9 9 8l3-6z"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5" fill="currentColor" aria-hidden="true"><path d="M12 2l3 6 6 .9-4.5 4.1 1.2 6L12 16.9 6.3 19l1.2-6L3 8.9 9 8l3-6z"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5" fill="currentColor" aria-hidden="true"><path d="M12 2l3 6 6 .9-4.5 4.1 1.2 6L12 16.9 6.3 19l1.2-6L3 8.9 9 8l3-6z"/></svg>
                     </div>
                     <p class="text-gray-700 mb-6 leading-relaxed">
                         "أفضل تجربة على الإطلاق! سرعة وكفاءة ومصداقية. أنصح الجميع بالتعامل معهم."
                     </p>
                     <div class="flex items-center gap-4">
                         <div class="bg-blue-600 w-12 h-12 rounded-full flex items-center justify-center">
-                            <i class="fas fa-user text-white"></i>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M6 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/></svg>
                         </div>
                         <div>
                             <div class="font-bold text-gray-900">محمد البلوي</div>
@@ -1060,15 +1033,26 @@
 
     <!-- Floating Buttons with Accessibility -->
     <a href="https://wa.me/971508248101" aria-label="تواصل معنا عبر واتساب" class="fixed bottom-6 left-6 bg-green-500 hover:bg-green-600 text-white w-16 h-16 rounded-full flex items-center justify-center shadow-2xl z-50 transition-all hover:scale-110 animate-pulse">
-        <i class="fab fa-whatsapp text-3xl" aria-hidden="true"></i>
+        <!-- Inline SVG chat bubble to avoid FA dependency on mobile -->
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <rect x="3" y="5" width="18" height="12" rx="3" ry="3"></rect>
+            <path d="M8 17l-4 4v-4"></path>
+        </svg>
     </a>
 
     <a href="tel:+971508248101" aria-label="اتصل بنا مباشرة" class="fixed bottom-24 left-6 bg-blue-600 hover:bg-blue-700 text-white w-16 h-16 rounded-full flex items-center justify-center shadow-2xl z-50 transition-all hover:scale-110">
-        <i class="fas fa-phone text-2xl" aria-hidden="true"></i>
+        <!-- Inline SVG phone (smartphone outline) to avoid FA dependency on mobile -->
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <rect x="7" y="2" width="10" height="20" rx="2" ry="2"></rect>
+            <line x1="12" y1="18" x2="12" y2="18"></line>
+        </svg>
     </a>
 
     <button id="backToTop" aria-label="العودة إلى الأعلى" class="fixed bottom-6 right-6 bg-gray-800 hover:bg-gray-900 text-white w-14 h-14 rounded-full items-center justify-center shadow-2xl z-50 transition-all hover:scale-110 hidden">
-        <i class="fas fa-arrow-up" aria-hidden="true"></i>
+        <!-- Inline SVG chevron-up to avoid FA dependency on mobile -->
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <polyline points="6 14 12 8 18 14"></polyline>
+        </svg>
     </button>
 
     <!-- Success Modal -->
