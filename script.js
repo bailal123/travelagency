@@ -26,7 +26,7 @@ function initializeApp() {
     // Set minimum date for travel date input
     setMinimumTravelDate();
     
-    console.log('Odit International Landing Page Initialized Successfully');
+    console.log('easy schengen from uae Landing Page Initialized Successfully');
 }
 
 // ===== NAVBAR FUNCTIONALITY =====
@@ -475,7 +475,7 @@ function showSuccessMessage() {
                 <button onclick="this.closest('.success-modal').remove()" class="btn btn-primary">
                     ممتاز
                 </button>
-                <a href="https://wa.me/971544785539" class="btn btn-outline-primary" target="_blank">
+                <a href="https://wa.me/971508248101" class="btn btn-outline-primary" target="_blank">
                     <i class="fab fa-whatsapp me-2"></i>
                     تواصل عبر واتساب
                 </a>

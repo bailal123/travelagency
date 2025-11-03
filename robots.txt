@@ -1,4 +1,4 @@
-# robots.txt for Odit International Travels
+# robots.txt for easy schengen from uae
 
 User-agent: *
 Allow: /
@@ -11,7 +11,7 @@ Disallow: /private/
 Disallow: /*.pdf$
 
 # Sitemap location
-Sitemap: https://www.odittravels.com/sitemap.xml
+Sitemap: https://www.easyschengenfromuae.com/sitemap.xml
 
 # Crawl-delay for specific bots
 User-agent: Googlebot
