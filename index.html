@@ -38,9 +38,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <!-- Removed preconnect/dns-prefetch to FA and Tailwind CDNs after switching to local CSS build -->
-    <!-- Preload LCP image in both AVIF (preferred) and WebP (fallback) so browsers pick the best they support -->
+    <!-- Preload LCP image (AVIF preferred). Browsers lacking AVIF will use WebP fallback without preloading. -->
     <link rel="preload" href="images/mainimage.avif" as="image" type="image/avif">
-    <link rel="preload" href="images/mainimage.webp" as="image" type="image/webp">
     <!-- Removed Tailwind CDN preload; using local built CSS -->
     
     <!-- Preload CSS to shorten critical path, then regular stylesheet keeps render-blocking semantics without extra network delay -->
@@ -335,7 +334,7 @@
                 <!-- Scrolling Offer Ticker -->
                 <div class="bg-yellow-400 text-blue-900 py-1 overflow-hidden">
                     <div class="ticker-container">
-                        <div class="ticker-content flex items-center gap-8 text-sm font-bold whitespace-nowrap">
+                        <div class="ticker-content ticker-paused flex items-center gap-8 text-sm font-bold whitespace-nowrap">
                             <span>⚡ موعد مضمون خلال 12 ساعة</span>
                             <span>🏆 نسبة نجاح 99.8%</span>
                             <span>💎 15,000+ عميل راضٍ</span>
@@ -365,7 +364,9 @@
         .ticker-content {
             display: inline-flex;
             animation: scroll-right 30s linear infinite;
+            animation-play-state: running;
         }
+        .ticker-paused { animation-play-state: paused !important; }
         
         @keyframes scroll-right {
             0% { transform: translateX(0); }
@@ -1045,7 +1046,13 @@
     <script>
         // Essential mobile-optimized JavaScript only
         document.addEventListener('DOMContentLoaded', function() {
-            
+            // Defer non-critical JS to idle time to reduce LCP element render delay
+            function onIdle(cb){
+                if (window.requestIdleCallback) { requestIdleCallback(cb, { timeout: 1000 }); }
+                else { setTimeout(cb, 200); }
+            }
+            onIdle(function(){
+
             // Sticky Header - highly optimized to prevent reflow
             let ticking = false;
             let lastScrollY = 0;
@@ -1225,6 +1232,12 @@
                 updateCountdown();
                 countdownInterval = setInterval(updateCountdown, 1000);
             }
+
+            // Resume ticker animation after idle
+            const ticker = document.querySelector('.ticker-content');
+            if (ticker) ticker.classList.remove('ticker-paused');
+            
+            }); // end onIdle
         });
         
         // Modal close function
