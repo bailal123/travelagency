@@ -37,34 +37,12 @@
     <!-- Performance Optimization -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-    <link rel="dns-prefetch" href="//cdn.tailwindcss.com">
-    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    <!-- Removed preconnect/dns-prefetch to FA and Tailwind CDNs after switching to local CSS build -->
     <link rel="preload" href="images/mainimage.webp" as="image" type="image/webp" fetchpriority="high">
-    <link rel="preload" href="https://cdn.tailwindcss.com" as="script">
-    <!-- Font Awesome CSS preload removed to avoid early webfont fetch on mobile -->
+    <!-- Removed Tailwind CDN preload; using local built CSS -->
     
-    <!-- Tailwind CSS - Load synchronously to prevent CLS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#1e3a8a',
-                        'primary-dark': '#1e40af',
-                        secondary: '#fbbf24',
-                        accent: '#10b981',
-                        dark: '#1f2937',
-                    },
-                    fontFamily: {
-                        cairo: ['Cairo', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
+    <!-- Tailwind CSS - Local purged/minified build to reduce unused JS/CSS -->
+    <link rel="stylesheet" href="assets/tailwind.css">
     
     <!-- Google Fonts - Progressive Enhancement -->
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;700;800;900&display=swap" as="style">
@@ -1057,8 +1035,7 @@
             let lastScrollY = 0;
             const stickyHeader = document.getElementById('stickyHeader');
             
-            function updateHeader() {
-                const currentScroll = window.pageYOffset;
+            function updateHeader(currentScroll) {
                 
                 // Only update if scroll changed significantly
                 if (Math.abs(currentScroll - lastScrollY) > 10) {
@@ -1169,8 +1146,7 @@
             let backToTopVisible = false;
             
             if (backToTop) {
-                function updateBackToTop() {
-                    const currentScroll = window.pageYOffset;
+                function updateBackToTop(currentScroll) {
                     const shouldShow = currentScroll > 300;
                     
                     if (shouldShow && !backToTopVisible) {
@@ -1188,8 +1164,9 @@
                 window.addEventListener('scroll', () => {
                     if (!ticking) {
                         requestAnimationFrame(() => {
-                            updateHeader();
-                            updateBackToTop();
+                            const y = window.pageYOffset || document.documentElement.scrollTop || 0;
+                            updateHeader(y);
+                            updateBackToTop(y);
                             ticking = false;
                         });
                         ticking = true;
