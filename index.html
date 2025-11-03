@@ -244,10 +244,8 @@
             animation: slideDown 0.5s ease-out;
         }
         
-        /* Smooth Scroll */
-        html {
-            scroll-behavior: smooth;
-        }
+        /* Smooth Scroll (kept). For very low-end devices, disable animations globally via prefers-reduced-motion below */
+        html { scroll-behavior: smooth; }
         
         /* Intersection Observer Animations - Lightweight */
         .reveal {
@@ -274,6 +272,11 @@
         /* Loading Optimization */
         img {
             content-visibility: auto;
+        }
+
+        /* Reduce animation/paint cost on low-end devices to cut reflow/paint time */
+        @media (prefers-reduced-motion: reduce) {
+            * { animation: none !important; transition: none !important; }
         }
     </style>
 </head>
@@ -374,7 +377,7 @@
             <div class="absolute inset-0 bg-gradient-to-br from-blue-900/95 via-blue-800/90 to-blue-900/95"></div>
         </div>
         <!-- Background Pattern -->
-        <div class="absolute inset-0 opacity-10">
+        <div class="absolute inset-0 opacity-10 hidden md:block">
             <div class="absolute inset-0" style="background-image: repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,.1) 35px, rgba(255,255,255,.1) 70px);"></div>
         </div>
         
