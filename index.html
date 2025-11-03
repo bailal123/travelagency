@@ -38,9 +38,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <!-- Removed preconnect/dns-prefetch to FA and Tailwind CDNs after switching to local CSS build -->
-    <link rel="preload" href="images/mainimage.webp" as="image" type="image/webp" fetchpriority="high">
+    <!-- Preload LCP image in both AVIF (preferred) and WebP (fallback) so browsers pick the best they support -->
+    <link rel="preload" href="images/mainimage.avif" as="image" type="image/avif">
+    <link rel="preload" href="images/mainimage.webp" as="image" type="image/webp">
     <!-- Removed Tailwind CDN preload; using local built CSS -->
     
+    <!-- Preload CSS to shorten critical path, then regular stylesheet keeps render-blocking semantics without extra network delay -->
+    <link rel="preload" href="assets/tailwind.css" as="style">
     <!-- Tailwind CSS - Local purged/minified build to reduce unused JS/CSS -->
     <link rel="stylesheet" href="assets/tailwind.css">
     
@@ -363,6 +367,7 @@
         <!-- Background Image with Overlay -->
         <div class="absolute inset-0">
             <picture>
+                <source srcset="images/mainimage.avif" type="image/avif">
                 <source srcset="images/mainimage.webp" type="image/webp">
                 <img src="images/mainimage.webp" alt="Visa Services" width="1920" height="1080" fetchpriority="high" decoding="async" class="w-full h-full object-cover" style="content-visibility:auto">
             </picture>
@@ -451,7 +456,7 @@
     </section>
 
     <!-- Trust Badges -->
-    <section class="bg-white py-8 shadow-lg">
+    <section class="bg-white py-8 shadow-lg" style="content-visibility:auto">
         <div class="container mx-auto px-4">
             <div class="flex flex-wrap justify-center items-center gap-8 text-center">
                 <div class="flex items-center gap-3">
@@ -487,7 +492,7 @@
     </section>
 
     <!-- Benefits Section -->
-    <section id="benefits" class="py-16 bg-white">
+    <section id="benefits" class="py-16 bg-white" style="content-visibility:auto">
         <div class="container mx-auto px-4">
             <div class="text-center mb-10">
                 <h2 class="text-3xl md:text-5xl font-black text-gray-900 mb-4">خريطة دول <span class="text-blue-600">منطقة شنغن</span></h2>
@@ -505,7 +510,7 @@
   
 
     <!-- How It Works - خطوات الحصول على التأشيرة -->
-    <section class="py-20 bg-gradient-to-br from-blue-50 to-purple-50">
+    <section class="py-20 bg-gradient-to-br from-blue-50 to-purple-50" style="content-visibility:auto">
         <div class="container mx-auto px-4">
             <div class="text-center mb-16 reveal">
                 <div class="inline-block bg-purple-100 text-purple-900 px-6 py-2 rounded-full font-bold text-sm mb-4">
@@ -596,7 +601,7 @@
     </section>
 
     <!-- Testimonials Section -->
-    <section class="py-20 bg-gradient-to-br from-blue-900 to-blue-800">
+    <section class="py-20 bg-gradient-to-br from-blue-900 to-blue-800" style="content-visibility:auto">
         <div class="container mx-auto px-4">
             <div class="text-center mb-16">
                 <h2 class="text-4xl md:text-5xl font-black text-white mb-4">
@@ -697,7 +702,7 @@
     
 
     <!-- Booking Section -->
-    <section id="booking" class="py-20 bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 relative overflow-hidden">
+    <section id="booking" class="py-20 bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 relative overflow-hidden" style="content-visibility:auto">
         <!-- Background Animation -->
         <div class="absolute inset-0 pointer-events-none opacity-5 md:opacity-10">
             <div class="absolute top-0 left-0 w-96 h-96 bg-yellow-400 rounded-full filter blur-3xl animate-float" aria-hidden="true" role="presentation"></div>
@@ -947,7 +952,7 @@
     </section>
 
     <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-12">
+    <footer class="bg-gray-900 text-white py-12" style="content-visibility:auto">
         <div class="container mx-auto px-4">
             <div class="grid md:grid-cols-3 gap-8 mb-8">
                 <div>
@@ -1000,7 +1005,7 @@
         </svg>
     </a>
 
-    <button id="backToTop" aria-label="العودة إلى الأعلى" class="fixed bottom-6 right-6 bg-gray-800 hover:bg-gray-900 text-white w-14 h-14 rounded-full items-center justify-center shadow-2xl z-50 transition-all hover:scale-110 hidden">
+    <button id="backToTop" aria-label="العودة إلى الأعلى" class="fixed bottom-6 right-6 bg-gray-800 hover:bg-gray-900 text-white w-14 h-14 rounded-full items-center justify-center shadow-2xl z-50 transition-all hover:scale-110 flex opacity-0 pointer-events-none">
         <!-- Inline SVG chevron-up to avoid FA dependency on mobile -->
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
             <polyline points="6 14 12 8 18 14"></polyline>
@@ -1150,12 +1155,10 @@
                     const shouldShow = currentScroll > 300;
                     
                     if (shouldShow && !backToTopVisible) {
-                        backToTop.classList.remove('hidden');
-                        backToTop.classList.add('flex');
+                        backToTop.classList.remove('opacity-0','pointer-events-none');
                         backToTopVisible = true;
                     } else if (!shouldShow && backToTopVisible) {
-                        backToTop.classList.add('hidden');
-                        backToTop.classList.remove('flex');
+                        backToTop.classList.add('opacity-0','pointer-events-none');
                         backToTopVisible = false;
                     }
                 }
