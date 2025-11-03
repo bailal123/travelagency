@@ -49,9 +49,9 @@
     <link rel="stylesheet" href="assets/tailwind.css">
     
     <!-- Google Fonts - Progressive Enhancement -->
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;700;800;900&display=swap" as="style">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'; this.onload=null; document.documentElement.classList.add('cairo-loaded');">
-    <noscript><link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;700;800;900&display=swap" rel="stylesheet"></noscript>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;700;800;900&display=optional" as="style">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;700;800;900&display=optional" rel="stylesheet" media="print" onload="this.media='all'; this.onload=null; document.documentElement.classList.add('cairo-loaded');">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;700;800;900&display=optional" rel="stylesheet"></noscript>
     
     <!-- Critical CSS for instant font rendering - Mobile First -->
     <style>
@@ -75,6 +75,14 @@
     /* Load Cairo later for enhancement */
     .cairo-loaded * {
         font-family: 'Cairo', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif !important;
+    }
+
+    /* Never apply Cairo on critical-above-the-fold sections to avoid CLS from font swap */
+    .no-webfont, .no-webfont * {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif !important;
+    }
+    .cairo-loaded .no-webfont, .cairo-loaded .no-webfont * {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif !important;
     }
     
     /* Reveal animations - simplified for performance */
@@ -366,7 +374,7 @@
     </style>
 
     <!-- Hero Section -->
-    <section class="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section class="relative min-h-screen flex items-center justify-center overflow-hidden no-webfont">
         <!-- Background Image with Overlay -->
         <div class="absolute inset-0">
             <picture>
