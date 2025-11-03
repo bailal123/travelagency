@@ -103,37 +103,7 @@
     }
     </style>
     
-    <!-- Font Awesome inline @font-face removed to avoid early webfont fetches; external CSS handles font rules -->
-        <!-- Load Font Awesome CSS immediately on desktop only; lazy-load on mobile via script below -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="(min-width: 768px)">
-        <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="all"></noscript>
-
-            <script>
-                // Lazy-load Font Awesome CSS on mobile after first interaction or a longer timeout
-                (function(){
-                    try {
-                        var isMobile = window.matchMedia && window.matchMedia('(max-width: 767px)').matches;
-                        if (!isMobile) return;
-                        function loadFA(){
-                            if (document.getElementById('fa-css')) return;
-                            var l = document.createElement('link');
-                            l.id = 'fa-css';
-                            l.rel = 'stylesheet';
-                            l.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css';
-                            document.head.appendChild(l);
-                            // cleanup listeners after load
-                            ['touchstart','scroll','keydown','mousemove'].forEach(function(evt){
-                                window.removeEventListener(evt, onFirstInteraction, { passive: true });
-                            });
-                        }
-                        function onFirstInteraction(){ loadFA(); }
-                        ['touchstart','scroll','keydown','mousemove'].forEach(function(evt){
-                            window.addEventListener(evt, onFirstInteraction, { passive: true, once: true });
-                        });
-                        window.addEventListener('load', function(){ setTimeout(loadFA, 6000); });
-                    } catch(e) {}
-                })();
-            </script>
+    <!-- Font Awesome CSS fully removed: all icons now inline SVGs to keep mobile critical path clean -->
     
     <!-- Structured Data / Schema.org for SEO -->
     <script type="application/ld+json">
@@ -215,6 +185,10 @@
         body {
             font-family: 'Cairo', sans-serif;
         }
+        /* Promote transform to compositor to avoid layout/reflow during scroll */
+        #stickyHeader { will-change: transform; }
+        #backToTop { will-change: transform, opacity; }
+        .ticker-content { will-change: transform; }
         
         /* Advanced Animations */
         @keyframes float {
@@ -412,7 +386,7 @@
         <div class="absolute inset-0">
             <picture>
                 <source srcset="images/mainimage.webp" type="image/webp">
-                <img src="images/mainimage.webp" alt="Visa Services" width="1920" height="1080" fetchpriority="high" class="w-full h-full object-cover" style="content-visibility:auto">
+                <img src="images/mainimage.webp" alt="Visa Services" width="1920" height="1080" fetchpriority="high" decoding="async" class="w-full h-full object-cover" style="content-visibility:auto">
             </picture>
             <div class="absolute inset-0 bg-gradient-to-br from-blue-900/95 via-blue-800/90 to-blue-900/95"></div>
         </div>
@@ -634,9 +608,9 @@
                 <!-- CTA -->
                 <div class="text-center mt-12 reveal">
                     <a href="#booking" class="inline-flex items-center gap-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-10 py-5 rounded-full font-black text-lg transition-all transform hover:scale-105 shadow-2xl">
-                        <i class="fas fa-rocket"></i>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2l8 8-5 1-1 5-8-8 6-2z"></path><path d="M5 19l4-4"></path><circle cx="15" cy="9" r="1"></circle></svg>
                         ابدأ رحلتك الآن
-                        <i class="fas fa-arrow-left"></i>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"></polyline></svg>
                     </a>
                 </div>
             </div>
@@ -730,7 +704,7 @@
             <div class="mt-12 max-w-2xl mx-auto">
                 <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
                     <div class="text-yellow-400 font-bold mb-4 flex items-center gap-2">
-                        <i class="fas fa-bell animate-pulse"></i>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5 animate-pulse" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 10-12 0c0 7-3 5-3 7h18c0-2-3 0-3-7"></path><path d="M13.73 21a2 2 0 01-3.46 0"></path></svg>
                         نشاط حي
                     </div>
                     <div id="recentActivity" class="text-white text-sm">
@@ -767,17 +741,17 @@
                 <!-- Incentives -->
                 <div class="grid md:grid-cols-3 gap-4 mb-10">
                     <div class="bg-blue-900 backdrop-blur-lg rounded-2xl p-6 text-center border border-white/10">
-                        <i class="fas fa-gift text-yellow-400 text-3xl mb-3"></i>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="text-yellow-400 w-8 h-8 mb-3 inline-block" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M12 7v14"></path><path d="M2 11h20"></path><path d="M12 7a3 3 0 110-6c3 0 3 6 3 6"></path><path d="M12 7a3 3 0 10-3-6c-3 0-3 6-3 6"></path></svg>
                         <div class="text-white font-bold">خصم 20%</div>
                         <div class="text-white text-sm">للحجز اليوم</div>
                     </div>
                     <div class="bg-blue-900 backdrop-blur-lg rounded-2xl p-6 text-center border border-white/10">
-                        <i class="fas fa-headset text-yellow-400 text-3xl mb-3"></i>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="text-yellow-400 w-8 h-8 mb-3 inline-block" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10a9 9 0 0118 0v5a3 3 0 01-3 3h-1"></path><path d="M21 16v-3a2 2 0 00-2-2h-1"></path><path d="M3 16v-3a2 2 0 012-2h1"></path><path d="M7 19a3 3 0 01-3-3"></path><path d="M18 19a3 3 0 003-3"></path></svg>
                         <div class="text-white font-bold">استشارة مجانية</div>
                         <div class="text-white text-sm">مع خبير</div>
                     </div>
                     <div class="bg-blue-900 backdrop-blur-lg rounded-2xl p-6 text-center border border-white/10">
-                        <i class="fas fa-shield-check text-yellow-400 text-3xl mb-3"></i>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="text-yellow-400 w-8 h-8 mb-3 inline-block" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V6l-8-4-8 4v6c0 6 8 10 8 10z"></path><path d="M9 12l2 2 4-4"></path></svg>
                         <div class="text-white font-bold">ضمان 100%</div>
                         <div class="text-white text-sm">أو استرجاع المال</div>
                     </div>
@@ -928,7 +902,7 @@
                             
                             <div class="bg-blue-50 border-2 border-blue-200 rounded-2xl p-6 mb-6">
                                 <div class="flex items-start gap-3 mb-4">
-                                    <i class="fas fa-info-circle text-blue-600 text-xl mt-1"></i>
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="text-blue-600 w-5 h-5 mt-1" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
                                     <div>
                                         <div class="font-bold text-gray-900 mb-2">ملخص طلبك:</div>
                                         <div class="text-gray-700 text-sm space-y-1" id="summaryContent">
@@ -955,20 +929,20 @@
 
                         <!-- Navigation Buttons -->
                         <div class="flex justify-between gap-4 pt-6 border-t-2 border-gray-200">
-                            <button type="button" id="prevBtn" class="px-8 py-3 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold rounded-xl transition-all hidden">
-                                <i class="fas fa-arrow-right ml-2"></i>
+                            <button type="button" id="prevBtn" class="px-8 py-3 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold rounded-xl transition-all hidden inline-flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg>
                                 السابق
                             </button>
                             
                             <div class="flex-1"></div>
                             
-                            <button type="button" id="nextBtn" class="px-8 py-3 bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900 text-white font-bold rounded-xl transition-all">
+                            <button type="button" id="nextBtn" class="px-8 py-3 bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900 text-white font-bold rounded-xl transition-all inline-flex items-center gap-2">
                                 التالي
-                                <i class="fas fa-arrow-left mr-2"></i>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"></polyline></svg>
                             </button>
                             
-                            <button type="submit" id="submitBtn" class="px-8 py-3 bg-gradient-to-r from-green-600 to-green-800 hover:from-green-700 hover:to-green-900 text-white font-bold rounded-xl transition-all hidden">
-                                <i class="fas fa-paper-plane ml-2"></i>
+                            <button type="submit" id="submitBtn" class="px-8 py-3 bg-gradient-to-r from-green-600 to-green-800 hover:from-green-700 hover:to-green-900 text-white font-bold rounded-xl transition-all hidden inline-flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2L11 13"></path><path d="M22 2l-7 20-4-9-9-4 20-7z"></path></svg>
                                 إرسال الطلب
                             </button>
                         </div>
@@ -978,15 +952,15 @@
                 <!-- Trust Indicators -->
                 <div class="flex flex-wrap justify-center gap-6 mt-8 text-white text-center">
                     <div class="flex items-center gap-2">
-                        <i class="fas fa-lock text-yellow-400"></i>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="text-yellow-400 w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0110 0v4"></path></svg>
                         <span class="text-sm">بياناتك محمية بالكامل</span>
                     </div>
                     <div class="flex items-center gap-2">
-                        <i class="fas fa-clock text-yellow-400"></i>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="text-yellow-400 w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg>
                         <span class="text-sm">رد خلال 30 دقيقة</span>
                     </div>
                     <div class="flex items-center gap-2">
-                        <i class="fas fa-shield-check text-yellow-400"></i>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="text-yellow-400 w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V6l-8-4-8 4v6c0 6 8 10 8 10z"></path><path d="M9 12l2 2 4-4"></path></svg>
                         <span class="text-sm">ضمان 100%</span>
                     </div>
                 </div>
@@ -1002,11 +976,11 @@
                     <h4 class="font-bold text-lg mb-4">تواصل معنا</h4>
                     <ul class="space-y-3 text-gray-400">
                         <li class="flex items-center gap-2">
-                            <i class="fas fa-phone text-yellow-400"></i>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="text-yellow-400 w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.66 12.66 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.66 12.66 0 002.81.7A2 2 0 0122 16.92z"></path></svg>
                             <a href="tel:+971508248101" class="hover:text-white transition-colors">+971 50 824 8101</a>
                         </li>
                         <li class="flex items-center gap-2">
-                            <i class="fas fa-envelope text-yellow-400"></i>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="text-yellow-400 w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16v16H4z" fill="none"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
                             <a href="mailto:info@easyschengenfromuae.com" class="hover:text-white transition-colors">info@easyschengenfromuae.com</a>
                         </li>
                     </ul>
@@ -1059,7 +1033,7 @@
     <div id="successModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
         <div class="bg-white rounded-3xl p-8 max-w-md w-full text-center transform scale-95 transition-all">
             <div class="bg-green-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
-                <i class="fas fa-check text-green-600 text-4xl"></i>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="text-green-600 w-10 h-10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"></path></svg>
             </div>
             <h3 class="text-3xl font-black text-gray-900 mb-4">تم إرسال طلبك بنجاح! 🎉</h3>
             <p class="text-gray-600 mb-6 leading-relaxed">
