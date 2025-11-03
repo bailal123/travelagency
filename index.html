@@ -38,7 +38,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <!-- Removed preconnect/dns-prefetch to FA and Tailwind CDNs after switching to local CSS build -->
-    <!-- Preload LCP image set (AVIF). Browser picks the optimal width based on sizes=100vw -->
+    <!-- Preload tiny mobile AVIF specifically -->
+    <link rel="preload" as="image" href="images/mainimage.avif" type="image/avif" media="(max-width: 480px)">
+    <!-- Preload LCP image set (AVIF) for larger screens -->
     <link rel="preload" as="image" href="images/mainimage.avif" imagesrcset="images/mainimage-768.avif 768w, images/mainimage-1280.avif 1280w, images/mainimage.avif 1920w" imagesizes="100vw" type="image/avif">
     <!-- Removed Tailwind CDN preload; using local built CSS -->
     
@@ -379,6 +381,8 @@
         <!-- Background Image with Overlay -->
         <div class="absolute inset-0">
             <picture>
+                <!-- Force the ultra-light 3KB AVIF on small phones -->
+                <source type="image/avif" media="(max-width: 480px)" srcset="images/mainimage.avif">
                 <source type="image/avif" srcset="images/mainimage-768.avif 768w, images/mainimage-1280.avif 1280w, images/mainimage.avif 1920w" sizes="100vw">
                 <source type="image/webp" srcset="images/mainimage-768.webp 768w, images/mainimage-1280.webp 1280w, images/mainimage.webp 1920w" sizes="100vw">
                 <img src="images/mainimage.avif" alt="Visa Services" width="1920" height="1080" fetchpriority="high" decoding="async" class="w-full h-full object-cover" style="content-visibility:auto">
