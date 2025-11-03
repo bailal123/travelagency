@@ -38,8 +38,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <!-- Removed preconnect/dns-prefetch to FA and Tailwind CDNs after switching to local CSS build -->
-    <!-- Preload LCP image (AVIF preferred). Browsers lacking AVIF will use WebP fallback without preloading. -->
-    <link rel="preload" href="images/mainimage.avif" as="image" type="image/avif">
+    <!-- Preload LCP image set (AVIF). Browser picks the optimal width based on sizes=100vw -->
+    <link rel="preload" as="image" href="images/mainimage.avif" imagesrcset="images/mainimage-768.avif 768w, images/mainimage-1280.avif 1280w, images/mainimage.avif 1920w" imagesizes="100vw" type="image/avif">
     <!-- Removed Tailwind CDN preload; using local built CSS -->
     
     <!-- Preload CSS to shorten critical path, then regular stylesheet keeps render-blocking semantics without extra network delay -->
@@ -379,9 +379,9 @@
         <!-- Background Image with Overlay -->
         <div class="absolute inset-0">
             <picture>
-                <source srcset="images/mainimage.avif" type="image/avif">
-                <source srcset="images/mainimage.webp" type="image/webp">
-                <img src="images/mainimage.webp" alt="Visa Services" width="1920" height="1080" fetchpriority="high" decoding="async" class="w-full h-full object-cover" style="content-visibility:auto">
+                <source type="image/avif" srcset="images/mainimage-768.avif 768w, images/mainimage-1280.avif 1280w, images/mainimage.avif 1920w" sizes="100vw">
+                <source type="image/webp" srcset="images/mainimage-768.webp 768w, images/mainimage-1280.webp 1280w, images/mainimage.webp 1920w" sizes="100vw">
+                <img src="images/mainimage.avif" alt="Visa Services" width="1920" height="1080" fetchpriority="high" decoding="async" class="w-full h-full object-cover" style="content-visibility:auto">
             </picture>
             <div class="absolute inset-0 bg-gradient-to-br from-blue-900/95 via-blue-800/90 to-blue-900/95"></div>
         </div>
