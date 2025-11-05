@@ -37,8 +37,10 @@
     <!-- Performance Optimization -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- Preload logo for immediate header render -->
-    <link rel="preload" as="image" href="images/logoeasy-min.avif" type="image/avif">
+    <!-- Preload logo for immediate header render - responsive -->
+    <link rel="preload" as="image" href="images/logoeasy-min-150.avif" type="image/avif" media="(max-width: 600px)">
+    <link rel="preload" as="image" href="images/logoeasy-min-300.avif" type="image/avif" media="(max-width: 900px)">
+    <link rel="preload" as="image" href="images/logoeasy-min.avif" type="image/avif" media="(min-width: 901px)">
     <!-- Removed preconnect/dns-prefetch to FA and Tailwind CDNs after switching to local CSS build -->
     <!-- Preload tiny mobile AVIF specifically -->
     <link rel="preload" as="image" href="images/mainimage.avif" type="image/avif" media="(max-width: 480px)">
@@ -195,7 +197,18 @@
                     <!-- Logo & Brand -->
                     <div class="flex items-center gap-3">
                         <a href="index.html">
-                            <img src="images/logoeasy-min.avif" alt="Easy Schengen from UAE Logo" class="shadow-lg" style="width: 18rem; height: 4rem; object-fit: contain;" decoding="async" loading="eager">
+                            <img src="images/logoeasy-min.avif"
+                                 srcset="images/logoeasy-min-150.avif 150w,
+                                         images/logoeasy-min-300.avif 300w,
+                                         images/logoeasy-min.avif 600w"
+                                 sizes="(max-width: 600px) 150px, (max-width: 900px) 300px, 18rem"
+                                 alt="Easy Schengen from UAE Logo"
+                                 class="shadow-lg"
+                                 style="width: 18rem; height: 4rem; object-fit: contain;"
+                                 width="288"
+                                 height="64"
+                                 decoding="async"
+                                 loading="eager">
                         </a>
                     </div>
                     
