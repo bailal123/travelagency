@@ -186,78 +186,117 @@
     <!-- Non-critical animations/styles: lazy-load to reduce LCP element render delay -->
     <link rel="preload" href="assets/animations.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="assets/animations.css"></noscript>
+    
+        <!-- EmailJS Browser SDK -->
+        <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+        <script>
+            // Initialize EmailJS with your Public Key (Dashboard > Account > API Keys)
+            // Replace 'YOUR_PUBLIC_KEY' below
+            if (window.emailjs) {
+                emailjs.init('uotnP3z8hYGILMQtN');
+            }
+        </script>
 </head>
 <body class="bg-gray-50 text-gray-900 antialiased">
 
     <!-- Sticky Header - يظهر عند السكرول -->
-    <header id="stickyHeader" class="fixed top-0 left-0 right-0 z-50 transform -translate-y-full transition-transform duration-500 shadow-2xl">
-        <div class="bg-gradient-to-r from-blue-900 via-blue-800 to-blue-900 backdrop-blur-lg border-b-2 border-yellow-400">
-            <div class="container mx-auto px-4">
-                <div class="flex items-center justify-between py-3 gap-4">
-                    <!-- Logo & Brand -->
-                    <div class="flex items-center gap-3">
-                        <a href="index.html">
-                            <img src="images/logoeasy-min.avif"
-                                 srcset="images/logoeasy-min-150.avif 150w,
-                                         images/logoeasy-min-300.avif 300w,
-                                         images/logoeasy-min.avif 600w"
-                                 sizes="(max-width: 600px) 150px, (max-width: 900px) 300px, 18rem"
-                                 alt="Easy Schengen from UAE Logo"
-                                 class="shadow-lg"
-                                 style="width: 18rem; height: 4rem; object-fit: contain;"
-                                 width="288"
-                                 height="64"
-                                 decoding="async"
-                                 loading="eager">
-                        </a>
-                    </div>
-                    
-                    <!-- Irresistible Offer -->
-                    <div class="flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-full font-bold text-sm">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6 text-orange-600" fill="currentColor" aria-hidden="true" focusable="false">
-                            <path d="M12 2s5 5 5 10a5 5 0 11-10 0C7 7 12 2 12 2z"/>
-                        </svg>
-                        <span class="hidden sm:inline">Exclusive!</span>
-                        <span class="font-black">30% OFF</span>
-                        <span class="hidden md:inline">+ Free VIP consultation</span>
-                    </div>
-                    
-                    <!-- CTA Buttons -->
-                    <div class="flex items-center gap-2">
-                        <a href="https://wa.me/971508248101" aria-label="Chat with us on WhatsApp" class="bg-green-700 hover:bg-green-800 text-white px-4 py-2 rounded-full font-bold text-sm transition-all flex items-center gap-2 shadow-lg hover:scale-105">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="5" width="18" height="12" rx="3" ry="3"></rect><path d="M8 17l-4 4v-4"></path></svg>
-                            <span class="hidden sm:inline">WhatsApp</span>
-                        </a>
-                        <a href="#booking" aria-label="Book your appointment now" class="bg-yellow-400 hover:bg-yellow-500 text-blue-900 px-6 py-2 rounded-full font-black text-sm transition-all flex items-center gap-2 shadow-lg hover:scale-105">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M14 2l8 8-5 1-1 5-8-8 6-2z"></path><path d="M5 19l4-4"></path><circle cx="15" cy="9" r="1"></circle></svg>
-                            <span>Book Now</span>
-                        </a>
-                    </div>
-                </div>
-                
-                <!-- Scrolling Offer Ticker -->
-                <div class="bg-yellow-400 text-blue-900 py-1 overflow-hidden">
-                    <div class="ticker-container">
-                        <div class="ticker-content ticker-paused flex items-center gap-8 text-sm font-bold whitespace-nowrap">
-                           
-                          
-                            <span>💎 15,000+ happy clients</span>
-                            <span>🎁 30% OFF for a limited time</span>
-                            <span>✅ Money-back guarantee</span>
-                            <span>🔥 Only 8 slots left!</span>
-                            <!-- Duplicate for seamless loop -->
-                           
-                           
-                            <span>💎 15,000+ happy clients</span>
-                            <span>🎁 30% OFF for a limited time</span>
-                            <span>✅ Money-back guarantee</span>
-                            <span>🔥 Only 8 slots left!</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+   <header id="stickyHeader" class="fixed top-0 left-0 right-0 z-50 transform -translate-y-full transition-transform duration-500 shadow-2xl">
+  <div class="bg-gradient-to-r from-blue-900 via-blue-800 to-blue-900 backdrop-blur-lg border-b-2 border-yellow-400">
+    <div class="container mx-auto px-4">
+      <!-- Flex container with inline styles -->
+      <div class="flex items-center py-3 gap-4" style="flex-wrap: wrap; justify-content: center;">
+        <style>
+          @media (min-width: 768px) {
+            #stickyHeader .header-container {
+              flex-wrap: nowrap !important;
+              justify-content: space-between !important;
+            }
+            #stickyHeader .logo-container {
+              width: auto !important;
+              justify-content: flex-start !important;
+            }
+            #stickyHeader .actions-container {
+              width: auto !important;
+            }
+          }
+        </style>
+        
+        <!-- Logo -->
+        <div class="flex justify-center logo-container" style="width: 100%;">
+          <a href="index.html">
+            <img 
+              src="images/logoeasy-min.avif"
+              srcset="
+                images/logoeasy-min-150.avif 150w,
+                images/logoeasy-min-300.avif 300w,
+                images/logoeasy-min.avif 600w"
+              sizes="(max-width: 600px) 150px, (max-width: 900px) 300px, 18rem"
+              alt="Easy Schengen from UAE Logo"
+              class="shadow-lg"
+              style="width: 18rem; height: 4rem; object-fit: contain;"
+              width="288"
+              height="64"
+              decoding="async"
+              loading="eager"
+            >
+          </a>
         </div>
-    </header>
+
+        <!-- Offers + Buttons (Same Row) -->
+        <div class="flex items-center justify-center gap-2 actions-container" style="width: 100%; flex-wrap: wrap;">
+
+          <!-- Offer -->
+          <div class="flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-full font-bold text-sm text-center">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6 text-orange-600" fill="currentColor" aria-hidden="true">
+              <path d="M12 2s5 5 5 10a5 5 0 11-10 0C7 7 12 2 12 2z"/>
+            </svg>
+            <span class="hidden sm:inline">Exclusive!</span>
+            <span class="font-black">30% OFF</span>
+            <span class="hidden md:inline">+ Free VIP consultation</span>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="flex items-center gap-2">
+            <!-- WhatsApp -->
+            <a href="https://wa.me/971508248101"
+              aria-label="Chat with us on WhatsApp"
+              class="bg-green-700 hover:bg-green-800 text-white px-4 py-2 rounded-full font-bold text-sm transition-all flex items-center gap-2 shadow-lg hover:scale-105">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="12" rx="3" ry="3"></rect><path d="M8 17l-4 4v-4"></path></svg>
+              <span class="hidden sm:inline">WhatsApp</span>
+            </a>
+
+            <!-- Book Now -->
+            <a href="#booking"
+              aria-label="Book your appointment now"
+              class="bg-yellow-400 hover:bg-yellow-500 text-blue-900 px-6 py-2 rounded-full font-black text-sm transition-all flex items-center gap-2 shadow-lg hover:scale-105">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2l8 8-5 1-1 5-8-8 6-2z"></path><path d="M5 19l4-4"></path><circle cx="15" cy="9" r="1"></circle></svg>
+              <span>Book Now</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scrolling Offer Ticker -->
+      <div class="bg-yellow-400 text-blue-900 py-1 overflow-hidden">
+        <div class="ticker-container">
+          <div class="ticker-content ticker-paused flex items-center gap-8 text-sm font-bold whitespace-nowrap">
+            <span>💎 15,000+ happy clients</span>
+            <span>🎁 30% OFF for a limited time</span>
+            <span>✅ Money-back guarantee</span>
+            <span>🔥 Only 8 slots left!</span>
+
+            <!-- Duplicate for seamless scroll -->
+            <span>💎 15,000+ happy clients</span>
+            <span>🎁 30% OFF for a limited time</span>
+            <span>✅ Money-back guarantee</span>
+            <span>🔥 Only 8 slots left!</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
 
     <style>
         .ticker-container {
@@ -381,7 +420,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 2l7 4v6c0 5-3.5 9-7 10-3.5-1-7-5-7-10V6l7-4z"/></svg>
                     <div class="text-right">
                         <div class="font-bold text-gray-900">Officially Trusted</div>
-                        <div class="text-sm text-gray-600">By European missions</div>
+                        <div class="text-sm text-gray-600">By UAE Residence</div>
                     </div>
                 </div>
                 <div class="flex items-center gap-3">
@@ -438,7 +477,7 @@
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-blue-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12l2-2 4 4 10-10"/></svg>
                         <h3 class="font-bold text-gray-900">Appointment booking</h3>
                     </div>
-                    <p class="text-gray-600 text-sm">Guaranteed Schengen appointment scheduling within 12 hours.</p>
+                    <p class="text-gray-600 text-sm">Guaranteed Schengen appointment scheduling within 2 days.</p>
                 </div>
                 <div class="bg-white rounded-2xl p-6 shadow-md border border-gray-100">
                     <div class="flex items-center gap-3 mb-3">
@@ -473,6 +512,10 @@
                     <a href="#booking" class="px-3 py-1 rounded-full bg-blue-50 text-blue-800 text-sm font-semibold hover:bg-blue-100 transition-colors cursor-pointer">Czechia</a>
                     <a href="#booking" class="px-3 py-1 rounded-full bg-blue-50 text-blue-800 text-sm font-semibold hover:bg-blue-100 transition-colors cursor-pointer">Poland</a>
                     <a href="#booking" class="px-3 py-1 rounded-full bg-blue-50 text-blue-800 text-sm font-semibold hover:bg-blue-100 transition-colors cursor-pointer">Hungary</a>
+                      <a href="#booking" class="px-3 py-1 rounded-full bg-blue-50 text-blue-800 text-sm font-semibold hover:bg-blue-100 transition-colors cursor-pointer">Norway</a>
+                    <a href="#booking" class="px-3 py-1 rounded-full bg-blue-50 text-blue-800 text-sm font-semibold hover:bg-blue-100 transition-colors cursor-pointer">Bulgaria</a>
+                    <a href="#booking" class="px-3 py-1 rounded-full bg-blue-50 text-blue-800 text-sm font-semibold hover:bg-blue-100 transition-colors cursor-pointer">Romania</a>
+                    <a href="#booking" class="px-3 py-1 rounded-full bg-blue-50 text-blue-800 text-sm font-semibold hover:bg-blue-100 transition-colors cursor-pointer">Croatia</a>
                 </div>
             </div>
 
@@ -897,15 +940,63 @@
                 });
             }
 
-            // Form submission
+            // Form submission via EmailJS
             const bookingForm = document.getElementById('bookingForm');
             if (bookingForm) {
-                bookingForm.addEventListener('submit', (e) => {
+                bookingForm.addEventListener('submit', async (e) => {
                     e.preventDefault();
-                    const successModal = document.getElementById('successModal');
-                    if (successModal) {
-                        successModal.classList.remove('hidden');
-                        successModal.classList.add('flex');
+
+                    // Basic validation for terms agreement
+                    const terms = bookingForm.querySelector('input[name="terms"]');
+                    if (terms && !terms.checked) {
+                        alert('Please agree to the Terms & Privacy Policy.');
+                        return;
+                    }
+
+                    // Disable submit and show sending state
+                    const submitBtn = bookingForm.querySelector('button[type="submit"]');
+                    const originalBtnHTML = submitBtn ? submitBtn.innerHTML : '';
+                    if (submitBtn) {
+                        submitBtn.disabled = true;
+                        submitBtn.classList.add('opacity-80', 'cursor-not-allowed');
+                        submitBtn.innerText = 'Sending...';
+                    }
+
+                    // Prepare template params for EmailJS
+                    const params = {
+                        from_name: bookingForm.fullName?.value || '',
+                        from_email: bookingForm.email?.value || '',
+                        phone: bookingForm.phone?.value || '',
+                        message: bookingForm.message?.value || '',
+                        page_url: window.location.href,
+                        submitted_at: new Date().toLocaleString()
+                    };
+
+                    try {
+                        if (!window.emailjs) throw new Error('EmailJS SDK not loaded');
+
+                        // Replace with your Service ID and Template ID from EmailJS
+                        const SERVICE_ID = 'service_71tivw8';
+                        const TEMPLATE_ID = 'template_1m4r5jx';
+
+                        await emailjs.send(SERVICE_ID, TEMPLATE_ID, params);
+
+                        // Show success modal and reset form
+                        const successModal = document.getElementById('successModal');
+                        if (successModal) {
+                            successModal.classList.remove('hidden');
+                            successModal.classList.add('flex');
+                        }
+                        bookingForm.reset();
+                    } catch (err) {
+                        console.error('EmailJS error:', err);
+                        alert('There was an error sending your request. Please try again.');
+                    } finally {
+                        if (submitBtn) {
+                            submitBtn.disabled = false;
+                            submitBtn.classList.remove('opacity-80', 'cursor-not-allowed');
+                            submitBtn.innerHTML = originalBtnHTML || 'Send Request';
+                        }
                     }
                 });
             }

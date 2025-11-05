@@ -9,15 +9,36 @@
   <link rel="stylesheet" href="assets/tailwind.css">
   <link rel="icon" type="image/avif" href="images/logoeasy-min.avif">
   <link rel="apple-touch-icon" sizes="180x180" href="images/logoeasy-min.avif">
+  <!-- Preload logo for immediate header render - responsive -->
+  <link rel="preload" as="image" href="images/logoeasy-min-150.avif" type="image/avif" media="(max-width: 600px)">
+  <link rel="preload" as="image" href="images/logoeasy-min-300.avif" type="image/avif" media="(max-width: 900px)">
+  <link rel="preload" as="image" href="images/logoeasy-min.avif" type="image/avif" media="(min-width: 901px)">
 </head>
 <body class="bg-gray-50 text-gray-900 antialiased">
   <!-- Site Header (consistent with index) -->
   <header class="shadow-2xl">
     <div class="bg-gradient-to-r from-blue-900 via-blue-800 to-blue-900 backdrop-blur-lg border-b-2 border-yellow-400">
       <div class="container mx-auto px-4">
-        <div class="flex items-center justify-between py-3 gap-4">
-          <!-- Logo & Brand -->
-          <div class="flex items-center gap-3">
+        <!-- Flex container with inline styles -->
+        <div class="flex items-center py-3 gap-4 header-container" style="flex-wrap: wrap; justify-content: center;">
+          <style>
+            @media (min-width: 768px) {
+              .header-container {
+                flex-wrap: nowrap !important;
+                justify-content: space-between !important;
+              }
+              .logo-container {
+                width: auto !important;
+                justify-content: flex-start !important;
+              }
+              .actions-container {
+                width: auto !important;
+              }
+            }
+          </style>
+          
+          <!-- Logo -->
+          <div class="flex justify-center logo-container" style="width: 100%;">
             <a href="index.html">
               <img src="images/logoeasy-min.avif"
                    srcset="images/logoeasy-min-150.avif 150w,
@@ -34,26 +55,37 @@
             </a>
           </div>
 
-          <!-- Offer Badge -->
-          <div class="flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-full font-bold text-sm">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6 text-orange-600" fill="currentColor" aria-hidden="true" focusable="false">
-              <path d="M12 2s5 5 5 10a5 5 0 11-10 0C7 7 12 2 12 2z"/>
-            </svg>
-            <span class="hidden sm:inline">Exclusive!</span>
-            <span class="font-black">30% OFF</span>
-            <span class="hidden md:inline">+ Free VIP consultation</span>
-          </div>
+          <!-- Offers + Buttons (Same Row) -->
+          <div class="flex items-center justify-center gap-2 actions-container" style="width: 100%; flex-wrap: wrap;">
 
-          <!-- CTA Buttons -->
-          <div class="flex items-center gap-2">
-            <a href="https://wa.me/971508248101" aria-label="Chat with us on WhatsApp" class="bg-green-700 hover:bg-green-800 text-white px-4 py-2 rounded-full font-bold text-sm transition-all flex items-center gap-2 shadow-lg hover:scale-105">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="5" width="18" height="12" rx="3" ry="3"></rect><path d="M8 17l-4 4v-4"></path></svg>
-              <span class="hidden sm:inline">WhatsApp</span>
-            </a>
-            <a href="index.html#booking" aria-label="Book your appointment now" class="bg-yellow-400 hover:bg-yellow-500 text-blue-900 px-6 py-2 rounded-full font-black text-sm transition-all flex items-center gap-2 shadow-lg hover:scale-105">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M14 2l8 8-5 1-1 5-8-8 6-2z"></path><path d="M5 19l4-4"></path><circle cx="15" cy="9" r="1"></circle></svg>
-              <span>Book Now</span>
-            </a>
+            <!-- Offer -->
+            <div class="flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-full font-bold text-sm text-center">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6 text-orange-600" fill="currentColor" aria-hidden="true" focusable="false">
+                <path d="M12 2s5 5 5 10a5 5 0 11-10 0C7 7 12 2 12 2z"/>
+              </svg>
+              <span class="hidden sm:inline">Exclusive!</span>
+              <span class="font-black">30% OFF</span>
+              <span class="hidden md:inline">+ Free VIP consultation</span>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex items-center gap-2">
+              <!-- WhatsApp -->
+              <a href="https://wa.me/971508248101"
+                aria-label="Chat with us on WhatsApp"
+                class="bg-green-700 hover:bg-green-800 text-white px-4 py-2 rounded-full font-bold text-sm transition-all flex items-center gap-2 shadow-lg hover:scale-105">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="5" width="18" height="12" rx="3" ry="3"></rect><path d="M8 17l-4 4v-4"></path></svg>
+                <span class="hidden sm:inline">WhatsApp</span>
+              </a>
+
+              <!-- Book Now -->
+              <a href="index.html#booking"
+                aria-label="Book your appointment now"
+                class="bg-yellow-400 hover:bg-yellow-500 text-blue-900 px-6 py-2 rounded-full font-black text-sm transition-all flex items-center gap-2 shadow-lg hover:scale-105">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M14 2l8 8-5 1-1 5-8-8 6-2z"></path><path d="M5 19l4-4"></path><circle cx="15" cy="9" r="1"></circle></svg>
+                <span>Book Now</span>
+              </a>
+            </div>
           </div>
         </div>
       </div>
