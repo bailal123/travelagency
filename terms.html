@@ -13,19 +13,8 @@
   <link rel="preload" as="image" href="images/logoeasy-min-150.avif" type="image/avif" media="(max-width: 600px)">
   <link rel="preload" as="image" href="images/logoeasy-min-300.avif" type="image/avif" media="(max-width: 900px)">
   <link rel="preload" as="image" href="images/logoeasy-min.avif" type="image/avif" media="(min-width: 901px)">
-  <!-- Google tag (gtag.js) - preconnect only; lazy-load after window load -->
+  <!-- Google tag (gtag.js) - preconnect only; load on-demand when needed -->
   <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);} 
-    window.addEventListener('load', function(){
-      var s=document.createElement('script');
-      s.src='https://www.googletagmanager.com/gtag/js?id=AW-17220038960';
-      s.async=true; 
-      s.onload=function(){ gtag('js', new Date()); gtag('config','AW-17220038960'); };
-      document.head.appendChild(s);
-    });
-  </script>
 </head>
 <body class="bg-gray-50 text-gray-900 antialiased">
   <!-- Site Header (consistent with index) -->
@@ -215,23 +204,38 @@
   </footer>
   <script>
     (function(){
-      function ensureGtag(){
+      var AW_ID = 'AW-17220038960';
+      var gtagLoadPromise = null;
+      function loadGtag(){
+        if (gtagLoadPromise) return gtagLoadPromise;
         window.dataLayer = window.dataLayer || [];
-        window.gtag = window.gtag || function(){ dataLayer.push(arguments); };
+        if (typeof window.gtag !== 'function') {
+          window.gtag = function(){ dataLayer.push(arguments); };
+        }
+        gtagLoadPromise = new Promise(function(resolve, reject){
+          var s=document.createElement('script');
+          s.src='https://www.googletagmanager.com/gtag/js?id='+AW_ID;
+          s.async=true;
+          s.onload=function(){ try{ window.gtag('js', new Date()); }catch(e){} resolve(); };
+          s.onerror=function(){ reject(new Error('Failed to load gtag')); };
+          document.head.appendChild(s);
+        });
+        return gtagLoadPromise;
       }
       function trackConversion(code){
-        ensureGtag();
-        window.gtag('event', 'conversion', {
-          send_to: 'AW-17220038960/' + code,
-          value: 1.0,
-          currency: 'AED'
-        });
+        loadGtag().then(function(){
+          window.gtag('event', 'conversion', {
+            send_to: AW_ID + '/' + code,
+            value: 1.0,
+            currency: 'AED'
+          });
+        }).catch(function(){});
       }
       function bindConversionListeners(){
         var wa = document.querySelectorAll('a[href*="wa.me/"]');
-        wa.forEach(function(a){ a.addEventListener('click', function(){ trackConversion('E9U9CPjs-t0aELDik5NA'); }); });
+        wa.forEach(function(a){ a.addEventListener('click', function(){ trackConversion('E9U9CPjs-t0aELDik5NA'); }, {passive:true}); });
         var tel = document.querySelectorAll('a[href^="tel:"]');
-        tel.forEach(function(a){ a.addEventListener('click', function(){ trackConversion('8z_eCNjq-t0aELDik5NA'); }); });
+        tel.forEach(function(a){ a.addEventListener('click', function(){ trackConversion('8z_eCNjq-t0aELDik5NA'); }, {passive:true}); });
       }
       if (document.readyState === 'loading'){
         document.addEventListener('DOMContentLoaded', bindConversionListeners);

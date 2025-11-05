@@ -717,15 +717,14 @@
         <div class="container mx-auto px-4 relative z-10">
             <div class="max-w-4xl mx-auto">
                 <!-- Heading -->
-                <div class="text-center mb-12">
+                <!-- <div class="text-center mb-12">
                     <h2 class="text-4xl md:text-5xl font-black text-white mb-4 inline-block bg-blue-900/80 px-4 py-2 rounded-xl">
                         Book your appointment <span class="text-yellow-400">now</span>
                     </h2>
-                    <!-- <p class="text-xl text-white inline-block bg-blue-900/95 px-3 py-2 rounded-xl"> -->
 <p class="text-xl text-white inline-block bg-blue-950 px-3 py-2 rounded-xl"></p>
                         Fill the form and we’ll contact you within 30 minutes
                     </p>
-                </div>
+                </div> -->
 
                 <!-- Incentives -->
                 <div class="grid md:grid-cols-3 gap-4 mb-10">
@@ -957,7 +956,7 @@
                 emailjsReady = true;
             }
 
-            // Google Ads conversion helpers (safe stub + bindings)
+            // Google Ads conversion helpers (on-demand loader + bindings)
             (function initGAdsHelpers(){
                 const AW_ID = 'AW-17220038960';
                 const CONVERSIONS = {
@@ -965,15 +964,33 @@
                     call: '8z_eCNjq-t0aELDik5NA',
                     form: 'rInWCMbh-t0aELDik5NA'
                 };
-                function ensureGtag(){
+                let gtagLoadPromise = null;
+                function loadGtag(){
+                    if (gtagLoadPromise) return gtagLoadPromise;
+                    // Stub immediately so events can queue if needed
+                    window.dataLayer = window.dataLayer || [];
                     if (typeof window.gtag !== 'function') {
-                        window.dataLayer = window.dataLayer || [];
                         window.gtag = function(){ window.dataLayer.push(arguments); };
                     }
+                    gtagLoadPromise = new Promise((resolve, reject) => {
+                        const s = document.createElement('script');
+                        s.src = 'https://www.googletagmanager.com/gtag/js?id=' + AW_ID;
+                        s.async = true;
+                        s.onload = function(){
+                            try {
+                                window.gtag('js', new Date());
+                                // Intentionally skipping gtag('config', AW_ID) to avoid page_view; conversions still work via send_to
+                            } catch(_) {}
+                            resolve();
+                        };
+                        s.onerror = () => reject(new Error('Failed to load gtag'));
+                        document.head.appendChild(s);
+                    });
+                    return gtagLoadPromise;
                 }
-                function trackConversion(code){
+                async function trackConversion(code){
                     try {
-                        ensureGtag();
+                        await loadGtag();
                         window.gtag('event', 'conversion', {
                             send_to: AW_ID + '/' + code,
                             value: 1.0,
@@ -1166,22 +1183,7 @@
             const ticker = document.querySelector('.ticker-content');
             if (ticker) ticker.classList.remove('ticker-paused');
 
-            // Lazy-load Google tag after idle to avoid adding 126KB to critical path
-            (function loadGtag(){
-                // Bootstrap stub immediately (if not present), script loads async
-                window.dataLayer = window.dataLayer || [];
-                if (typeof window.gtag !== 'function') {
-                    window.gtag = function(){ window.dataLayer.push(arguments); };
-                }
-                const s = document.createElement('script');
-                s.src = 'https://www.googletagmanager.com/gtag/js?id=AW-17220038960';
-                s.async = true;
-                s.onload = function(){
-                    window.gtag('js', new Date());
-                    window.gtag('config', 'AW-17220038960');
-                };
-                document.head.appendChild(s);
-            })();
+            // Note: Google tag is now loaded on-demand when a conversion event is needed
             
             }); // end onIdle
         });
