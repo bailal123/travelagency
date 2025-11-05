@@ -189,6 +189,17 @@
     
     <!-- Preconnect to EmailJS CDN to minimize handshake when lazily loading -->
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+
+        <!-- Google tag (gtag.js) - async to avoid render blocking -->
+        <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
+        <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17220038960"></script>
+        <script>
+            // Base gtag bootstrap
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){ dataLayer.push(arguments); }
+            gtag('js', new Date());
+            gtag('config', 'AW-17220038960');
+        </script>
 </head>
 <body class="bg-gray-50 text-gray-900 antialiased">
 
@@ -954,6 +965,43 @@
                 emailjsReady = true;
             }
 
+            // Google Ads conversion helpers (safe stub + bindings)
+            (function initGAdsHelpers(){
+                const AW_ID = 'AW-17220038960';
+                const CONVERSIONS = {
+                    whatsapp: 'E9U9CPjs-t0aELDik5NA',
+                    call: '8z_eCNjq-t0aELDik5NA',
+                    form: 'rInWCMbh-t0aELDik5NA'
+                };
+                function ensureGtag(){
+                    if (typeof window.gtag !== 'function') {
+                        window.dataLayer = window.dataLayer || [];
+                        window.gtag = function(){ window.dataLayer.push(arguments); };
+                    }
+                }
+                function trackConversion(code){
+                    try {
+                        ensureGtag();
+                        window.gtag('event', 'conversion', {
+                            send_to: AW_ID + '/' + code,
+                            value: 1.0,
+                            currency: 'AED'
+                        });
+                    } catch(_) {}
+                }
+                // Bind WhatsApp clicks anywhere on the page
+                document.querySelectorAll('a[href*="wa.me"]').forEach(a => {
+                    a.addEventListener('click', () => trackConversion(CONVERSIONS.whatsapp), { passive: true });
+                });
+                // Bind telephone clicks
+                document.querySelectorAll('a[href^="tel:"]').forEach(a => {
+                    a.addEventListener('click', () => trackConversion(CONVERSIONS.call), { passive: true });
+                });
+                // Expose for reuse in form handler
+                window.__trackGAdsConversion = trackConversion;
+                window.__GAdsConvCodes = CONVERSIONS;
+            })();
+
             // Form submission via EmailJS (lazy-loaded)
             const bookingForm = document.getElementById('bookingForm');
             if (bookingForm) {
@@ -1001,6 +1049,10 @@
                         if (successModal) {
                             successModal.classList.remove('hidden');
                             successModal.classList.add('flex');
+                        }
+                        // Google Ads conversion: Form Submission
+                        if (window.__trackGAdsConversion && window.__GAdsConvCodes) {
+                            window.__trackGAdsConversion(window.__GAdsConvCodes.form);
                         }
                         bookingForm.reset();
                     } catch (err) {

@@ -1,0 +1,8 @@
+<!-- Event snippet for Call Clicks conversion page -->
+<script>
+  gtag('event', 'conversion', {
+      'send_to': 'AW-17220038960/8z_eCNjq-t0aELDik5NA',
+      'value': 1.0,
+      'currency': 'AED'
+  });
+</script>
