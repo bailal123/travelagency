@@ -190,16 +190,8 @@
     <!-- Preconnect to EmailJS CDN to minimize handshake when lazily loading -->
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 
-        <!-- Google tag (gtag.js) - async to avoid render blocking -->
-        <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
-        <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17220038960"></script>
-        <script>
-            // Base gtag bootstrap
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){ dataLayer.push(arguments); }
-            gtag('js', new Date());
-            gtag('config', 'AW-17220038960');
-        </script>
+    <!-- Preconnect only; gtag will be lazy-loaded after idle -->
+    <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
 </head>
 <body class="bg-gray-50 text-gray-900 antialiased">
 
@@ -1173,6 +1165,23 @@
             // Resume ticker animation after idle
             const ticker = document.querySelector('.ticker-content');
             if (ticker) ticker.classList.remove('ticker-paused');
+
+            // Lazy-load Google tag after idle to avoid adding 126KB to critical path
+            (function loadGtag(){
+                // Bootstrap stub immediately (if not present), script loads async
+                window.dataLayer = window.dataLayer || [];
+                if (typeof window.gtag !== 'function') {
+                    window.gtag = function(){ window.dataLayer.push(arguments); };
+                }
+                const s = document.createElement('script');
+                s.src = 'https://www.googletagmanager.com/gtag/js?id=AW-17220038960';
+                s.async = true;
+                s.onload = function(){
+                    window.gtag('js', new Date());
+                    window.gtag('config', 'AW-17220038960');
+                };
+                document.head.appendChild(s);
+            })();
             
             }); // end onIdle
         });

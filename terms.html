@@ -13,13 +13,18 @@
   <link rel="preload" as="image" href="images/logoeasy-min-150.avif" type="image/avif" media="(max-width: 600px)">
   <link rel="preload" as="image" href="images/logoeasy-min-300.avif" type="image/avif" media="(max-width: 900px)">
   <link rel="preload" as="image" href="images/logoeasy-min.avif" type="image/avif" media="(min-width: 901px)">
-  <!-- Google tag (gtag.js) - async -->
+  <!-- Google tag (gtag.js) - preconnect only; lazy-load after window load -->
   <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
-  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17220038960"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);} gtag('js', new Date());
-    gtag('config', 'AW-17220038960');
+    function gtag(){dataLayer.push(arguments);} 
+    window.addEventListener('load', function(){
+      var s=document.createElement('script');
+      s.src='https://www.googletagmanager.com/gtag/js?id=AW-17220038960';
+      s.async=true; 
+      s.onload=function(){ gtag('js', new Date()); gtag('config','AW-17220038960'); };
+      document.head.appendChild(s);
+    });
   </script>
 </head>
 <body class="bg-gray-50 text-gray-900 antialiased">
@@ -208,5 +213,32 @@
       </div>
     </div>
   </footer>
+  <script>
+    (function(){
+      function ensureGtag(){
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = window.gtag || function(){ dataLayer.push(arguments); };
+      }
+      function trackConversion(code){
+        ensureGtag();
+        window.gtag('event', 'conversion', {
+          send_to: 'AW-17220038960/' + code,
+          value: 1.0,
+          currency: 'AED'
+        });
+      }
+      function bindConversionListeners(){
+        var wa = document.querySelectorAll('a[href*="wa.me/"]');
+        wa.forEach(function(a){ a.addEventListener('click', function(){ trackConversion('E9U9CPjs-t0aELDik5NA'); }); });
+        var tel = document.querySelectorAll('a[href^="tel:"]');
+        tel.forEach(function(a){ a.addEventListener('click', function(){ trackConversion('8z_eCNjq-t0aELDik5NA'); }); });
+      }
+      if (document.readyState === 'loading'){
+        document.addEventListener('DOMContentLoaded', bindConversionListeners);
+      } else {
+        bindConversionListeners();
+      }
+    })();
+  </script>
 </body>
 </html>
