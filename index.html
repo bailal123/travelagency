@@ -1029,7 +1029,22 @@ We help UAE residents get their Schengen appointments whether in Dubai or Abu Dh
                     loadGtag().then(function(){
                         try { window.gtag('config', AW_ID, { send_page_view: false }); } catch(e) {}
                     }).catch(function(){});
-                }, 1000);
+                }, 1500);
+
+                // Optional lightweight remarketing ping after 15s (once per session)
+                // Sends a minimal page_view to AW to enable remarketing tiles in Tag Assistant
+                setTimeout(function(){
+                    try {
+                        if (sessionStorage.getItem('gads_rmk_sent') === '1') return;
+                        loadGtag().then(function(){
+                            try {
+                                window.gtag('event', 'page_view', { send_to: AW_ID });
+                                sessionStorage.setItem('gads_rmk_sent','1');
+                                try { console.log('[GAds] Remarketing page_view sent'); } catch(e) {}
+                            } catch(e) {}
+                        }).catch(function(){});
+                    } catch(e) {}
+                }, 1500);
                 // Bind WhatsApp clicks anywhere on the page
                 document.querySelectorAll('a[href*="wa.me"]').forEach(a => {
                     a.addEventListener('click', () => trackConversion(CONVERSIONS.whatsapp), { passive: true });
