@@ -947,25 +947,25 @@ We help UAE residents get their Schengen appointments whether in Dubai or Abu Dh
                 });
             }
 
-            // Lazy loader for EmailJS to avoid render-blocking
-            let emailjsReady = false;
-            async function loadEmailJS() {
-                if (emailjsReady && window.emailjs) return;
-                if (!window.emailjs) {
-                    await new Promise((resolve, reject) => {
-                        const s = document.createElement('script');
-                        s.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js';
-                        s.async = true;
-                        s.onload = resolve;
-                        s.onerror = () => reject(new Error('Failed to load EmailJS SDK'));
-                        document.head.appendChild(s);
-                    });
+            // Email sending via EmailJS REST API (no external SDK to satisfy CSP)
+            async function sendEmailViaAPI(templateParams){
+                const SERVICE_ID = 'service_71tivw8';
+                const TEMPLATE_ID = 'template_1m4r5jx';
+                const PUBLIC_KEY = 'uotnP3z8hYGILMQtN';
+                const resp = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        service_id: SERVICE_ID,
+                        template_id: TEMPLATE_ID,
+                        user_id: PUBLIC_KEY,
+                        template_params: templateParams
+                    })
+                });
+                if (!resp.ok) {
+                    const text = await resp.text().catch(() => '');
+                    throw new Error('EmailJS API error: ' + resp.status + ' ' + text);
                 }
-                if (window.emailjs && !window.emailjs.__inited) {
-                    window.emailjs.init('uotnP3z8hYGILMQtN');
-                    window.emailjs.__inited = true;
-                }
-                emailjsReady = true;
             }
 
             // Google Ads conversion helpers (on-demand loader + bindings)
@@ -1056,14 +1056,8 @@ We help UAE residents get their Schengen appointments whether in Dubai or Abu Dh
                     };
 
                     try {
-                        // Ensure EmailJS SDK is loaded only when needed
-                        await loadEmailJS();
-
-                        // Replace with your Service ID and Template ID from EmailJS
-                        const SERVICE_ID = 'service_71tivw8';
-                        const TEMPLATE_ID = 'template_1m4r5jx';
-
-                        await emailjs.send(SERVICE_ID, TEMPLATE_ID, params);
+                        // Send via REST API (no SDK fetch blocked by CSP)
+                        await sendEmailViaAPI(params);
 
                         // Show success modal and reset form
                         const successModal = document.getElementById('successModal');
