@@ -48,9 +48,10 @@
     <link rel="preload" as="image" href="images/mainimage.avif" imagesrcset="images/mainimage-768.avif 768w, images/mainimage-1280.avif 1280w, images/mainimage.avif 1920w" imagesizes="100vw" type="image/avif">
     <!-- Removed Tailwind CDN preload; using local built CSS -->
     
-    <!-- Tailwind CSS - load non-blocking to reduce LCP; prevent FOUC via tiny critical CSS below -->
-    <link href="assets/tailwind.css" rel="stylesheet" media="print" onload="this.media='all'; this.onload=null;">
-    <noscript><link rel="stylesheet" href="assets/tailwind.css"></noscript>
+    <!-- Preload CSS to shorten critical path, then regular stylesheet keeps render-blocking semantics without extra network delay -->
+    <link rel="preload" href="assets/tailwind.css" as="style">
+    <!-- Tailwind CSS - Local purged/minified build to reduce unused JS/CSS -->
+    <link rel="stylesheet" href="assets/tailwind.css">
     
     <!-- Google Fonts - Progressive Enhancement -->
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;700;800;900&display=optional" as="style">
@@ -69,10 +70,6 @@
         font-weight: 900 !important;
         line-height: 1.2 !important;
     }
-
-    /* Critical LCP text styles (ensure hero H1 paints immediately) */
-    h1 { color: #fff; font-size: 3rem; margin-bottom: 1.5rem; }
-    @media (min-width: 768px) { h1 { font-size: 4rem; } }
     
     /* Ensure text is visible during font load */
     .font-black { font-weight: 900 !important; }
@@ -994,6 +991,7 @@ We help UAE residents get their Schengen appointments whether in Dubai or Abu Dh
                         s.onload = function(){
                             try {
                                 window.gtag('js', new Date());
+                                window.gtag('config', AW_ID, { send_page_view: false });
                                 // Intentionally skipping gtag('config', AW_ID) to avoid page_view; conversions still work via send_to
                             } catch(_) {}
                             resolve();
@@ -1013,6 +1011,25 @@ We help UAE residents get their Schengen appointments whether in Dubai or Abu Dh
                         });
                     } catch(_) {}
                 }
+                // Optional: Debug helper so Tag Assistant shows a tag on page load without sending a page_view
+                try {
+                    const qs = new URLSearchParams(location.search);
+                    const debugFlag = qs.has('debug_gtag') || localStorage.getItem('debug_gtag') === '1';
+                    if (debugFlag) {
+                        loadGtag().then(function(){
+                            try { window.gtag('config', AW_ID, { debug_mode: true, send_page_view: false }); } catch(e) {}
+                            try { console.log('[GAds] Debug mode enabled: gtag loaded with config but page_view suppressed'); } catch(e) {}
+                        });
+                    }
+                } catch(e) {}
+
+                // New: Warm-load gtag automatically after 10 seconds to satisfy Google without hurting LCP/SEO
+                // This loads the library and runs config with send_page_view:false (no page_view hit)
+                setTimeout(function(){
+                    loadGtag().then(function(){
+                        try { window.gtag('config', AW_ID, { send_page_view: false }); } catch(e) {}
+                    }).catch(function(){});
+                }, 10000);
                 // Bind WhatsApp clicks anywhere on the page
                 document.querySelectorAll('a[href*="wa.me"]').forEach(a => {
                     a.addEventListener('click', () => trackConversion(CONVERSIONS.whatsapp), { passive: true });

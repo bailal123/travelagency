@@ -226,6 +226,23 @@
         var tel = document.querySelectorAll('a[href^="tel:"]');
         tel.forEach(function(a){ a.addEventListener('click', function(){ trackConversion('8z_eCNjq-t0aELDik5NA'); }, {passive:true}); });
       }
+      // Optional debug switch so Tag Assistant sees a tag on page load without page_view
+      try {
+        var qs = new URLSearchParams(location.search);
+        var debugFlag = qs.has('debug_gtag') || localStorage.getItem('debug_gtag') === '1';
+        if (debugFlag) {
+          loadGtag().then(function(){
+            try { window.gtag('config', AW_ID, { debug_mode: true, send_page_view: false }); } catch(e) {}
+            try { console.log('[GAds] Debug mode enabled on privacy page'); } catch(e) {}
+          });
+        }
+      } catch(e) {}
+      // Warm-load gtag after 10s automatically without sending page_view
+      setTimeout(function(){
+        loadGtag().then(function(){
+          try { window.gtag('config', AW_ID, { send_page_view: false }); } catch(e) {}
+        }).catch(function(){});
+      }, 10000);
       if (document.readyState === 'loading'){
         document.addEventListener('DOMContentLoaded', bindConversionListeners);
       } else {
