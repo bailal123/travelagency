@@ -14,6 +14,7 @@
     ExpiresByType image/jpeg "access plus 1 year"
     ExpiresByType image/gif "access plus 1 year"
     ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/avif "access plus 1 year"
     ExpiresByType image/webp "access plus 1 year"
     ExpiresByType image/svg+xml "access plus 1 year"
     ExpiresByType image/x-icon "access plus 1 year"
@@ -43,7 +44,7 @@
 # Cache-Control Headers
 <IfModule mod_headers.c>
     # Images and static assets - immutable
-    <FilesMatch "\.(jpg|jpeg|png|gif|webp|svg|ico|woff|woff2|ttf|otf|eot)$">
+    <FilesMatch "\.(jpg|jpeg|png|gif|avif|webp|svg|ico|woff|woff2|ttf|otf|eot)$">
         Header set Cache-Control "public, max-age=31536000, immutable"
     </FilesMatch>
     
@@ -57,6 +58,10 @@
         Header set Cache-Control "public, max-age=3600, must-revalidate"
     </FilesMatch>
 </IfModule>
+
+# Ensure correct MIME types for modern images
+AddType image/avif avif
+AddType image/webp webp
 
 # Security Headers - Enhanced
 <IfModule mod_headers.c>
