@@ -1054,9 +1054,18 @@ We help UAE residents get their Schengen appointments whether in Dubai or Abu Dh
                     } catch(e) {}
                 }, 1500);
                 // Bind WhatsApp clicks anywhere on the page
+                // document.querySelectorAll('a[href*="wa.me"]').forEach(a => {
+                //     a.addEventListener('click', () => trackConversion(CONVERSIONS.whatsapp), { passive: true });
+                // });
                 document.querySelectorAll('a[href*="wa.me"]').forEach(a => {
-                    a.addEventListener('click', () => trackConversion(CONVERSIONS.whatsapp), { passive: true });
-                });
+    a.addEventListener('click', (e) => {
+        e.preventDefault();
+        trackConversion(CONVERSIONS.whatsapp);
+        setTimeout(() => {
+            window.open(a.href, '_blank');
+        }, 400);
+    });
+});
                 // Bind telephone clicks
                 document.querySelectorAll('a[href^="tel:"]').forEach(a => {
                     a.addEventListener('click', () => trackConversion(CONVERSIONS.call), { passive: true });
