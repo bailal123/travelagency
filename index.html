@@ -1031,41 +1031,42 @@
                     }
                 } catch(e) {}
 
-                // New: Warm-load gtag automatically after 10 seconds to satisfy Google without hurting LCP/SEO
-                // This loads the library and runs config with send_page_view:false (no page_view hit)
-                setTimeout(function(){
-                    loadGtag().then(function(){
-                        try { window.gtag('config', AW_ID, { send_page_view: false }); } catch(e) {}
-                    }).catch(function(){});
-                }, 1500);
+                                // Defer warm-load until user interacts or 3500ms (reduces LCP delay + unused JS)
+                                (function(){
+                                    let fired=false;
+                                    function trigger(){
+                                        if(fired) return; fired=true;
+                                        loadGtag().then(function(){
+                                            try { window.gtag('config', AW_ID, { send_page_view:false }); }catch(e){}
+                                        });
+                                        ['pointerdown','keydown','touchstart','scroll'].forEach(ev=>{ try{ window.removeEventListener(ev, trigger, passiveOnce);}catch(_){}});
+                                    }
+                                    const passiveOnce={passive:true,once:true};
+                                    ['pointerdown','keydown','touchstart','scroll'].forEach(ev=>window.addEventListener(ev, trigger, passiveOnce));
+                                    setTimeout(trigger,3500);
+                                })();
 
-                // Optional lightweight remarketing ping after 15s (once per session)
-                // Sends a minimal page_view to AW to enable remarketing tiles in Tag Assistant
-                setTimeout(function(){
-                    try {
-                        if (sessionStorage.getItem('gads_rmk_sent') === '1') return;
-                        loadGtag().then(function(){
-                            try {
-                                window.gtag('event', 'page_view', { send_to: AW_ID });
-                                sessionStorage.setItem('gads_rmk_sent','1');
-                                try { console.log('[GAds] Remarketing page_view sent'); } catch(e) {}
-                            } catch(e) {}
-                        }).catch(function(){});
-                    } catch(e) {}
-                }, 1500);
+                                // Remarketing page_view once per session (after warm-load + delay)
+                                setTimeout(function(){
+                                    try {
+                                        if (sessionStorage.getItem('gads_rmk_sent')==='1') return;
+                                        loadGtag().then(function(){
+                                            try { window.gtag('event','page_view',{ send_to: AW_ID }); sessionStorage.setItem('gads_rmk_sent','1'); }catch(e){}
+                                        });
+                                    }catch(e){}
+                                }, 4500);
                 // Bind WhatsApp clicks anywhere on the page
                 // document.querySelectorAll('a[href*="wa.me"]').forEach(a => {
                 //     a.addEventListener('click', () => trackConversion(CONVERSIONS.whatsapp), { passive: true });
                 // });
-                document.querySelectorAll('a[href*="wa.me"]').forEach(a => {
-    a.addEventListener('click', (e) => {
-        e.preventDefault();
-        trackConversion(CONVERSIONS.whatsapp);
-        setTimeout(() => {
-            window.open(a.href, '_blank');
-        }, 400);
-    });
-});
+                                document.querySelectorAll('a[href*="wa.me"]').forEach(a => {
+                                    a.addEventListener('click', function(ev){
+                                        try { ev.preventDefault(); }catch(_){ }
+                                        // fire conversion with callback, then navigate (fallback timeout)
+                                        trackConversion(CONVERSIONS.whatsapp);
+                                        setTimeout(function(){ try { window.open(a.href,'_blank'); }catch(_){ location.href=a.href; } }, 600);
+                                    }, { passive:false });
+                                });
                 // Bind telephone clicks
                 document.querySelectorAll('a[href^="tel:"]').forEach(a => {
                     a.addEventListener('click', () => trackConversion(CONVERSIONS.call), { passive: true });
